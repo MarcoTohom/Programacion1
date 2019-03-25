@@ -6,7 +6,7 @@ public class Inciso2 {
 
     public static void main(String[] args) {
         int aleatorio = -1, respuesta = -1; //Se crean las variables del número aleatorio y respuesta con valores iguales y fuera del rango a evaluar
-        String aux = "";
+        String aux = "|";
         Scanner escaner = new Scanner(System.in); //Se crea un objeto del tipo Scanner para guardar el valor del número que el usuario deberá guardar
         aleatorio = (int) (Math.random() * 100);     //Con la función Math.random() se obtiene un valor aleatorio y se guarda en su respectiva variable
         do {
