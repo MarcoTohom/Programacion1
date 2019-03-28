@@ -8,21 +8,16 @@ import java.util.Scanner;
  */
 public class Inciso4 {
 
+    static double parcial1 = 0, parcial2 = 0, tareas = 0, examenFinal = 0, notaFinal;
+    static Scanner escaner = new Scanner(System.in);
+    
     public static void main(String[] args) {
         String nombre = "Marco";
-        double parcial1 = 0, parcial2 = 0, tareas = 0, examenFinal = 0, notaFinal;
-        Scanner escaner = new Scanner(System.in);
         try {
             System.out.print("Ingrese nombre:");
             nombre = escaner.nextLine();
             //Primer parcial
-            do {
-                if (parcial1 < -1 || parcial1 > 101) {
-                    System.out.print("El porcentaje debe estar entre 0 y 100\n");
-                }
-                System.out.print("Ingrese punteo de primer parcial:");
-                parcial1 = escaner.nextDouble();
-            } while (parcial1 < -1 || parcial1 > 101);
+            parcial1=primerParcial();
             //Segundo parcial
             do {
                 if (parcial2 < -1 || parcial2 > 101) {
@@ -62,5 +57,20 @@ public class Inciso4 {
         } catch (InputMismatchException ime) {
             System.out.println("Se ingresó un valor inválido.");
         }
+    }
+
+    public static double primerParcial() {
+        try {
+            do {
+                if (parcial1 < 0 || parcial1 > 100) {
+                    System.out.print("El porcentaje debe estar entre 0 y 100\n");
+                }
+                System.out.print("Ingrese punteo de primer parcial:");
+                parcial1 = escaner.nextDouble();
+            } while (parcial1 < 0 || parcial1 > 100);
+        } catch (InputMismatchException ime) {
+            System.out.println("Se ingresó un valor inválido.");
+        }
+        return parcial1;
     }
 }
