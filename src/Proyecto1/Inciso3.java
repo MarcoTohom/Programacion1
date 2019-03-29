@@ -16,12 +16,13 @@ public class Inciso3 {
         String entrada = "", vectorEntrada[];
         System.out.print("Ingrese operacion: ");
         entrada = sc.nextLine();
-        vectorEntrada = entrada.split("[ ]");
-        prioridades = new int[vectorEntrada.length];
-        operar(vectorEntrada);
+        vectorEntrada = entrada.split("[ ]");// genera vector usando de separación eespacio
+        prioridades = new int[vectorEntrada.length];// crea vector de prioridades para ordenar las operaciones con el mismo tamaño de la entrada
+        numeros = new Integer[vectorEntrada.length];// crea vector de números de tipo Integer para poder manejar valores vacios
+        operar(vectorEntrada);// se manda a ejecutar el método operar
     }
 
-    public static void operar(String[] pVectorEntrada) {
+    public static void operar(String[] pVectorEntrada) {//el método operar se encarga principalmente de ordenar los nuevos vectores y posteriormente trabajarlos
         priorizar(pVectorEntrada);
         numerar(pVectorEntrada);
     }
@@ -33,30 +34,32 @@ public class Inciso3 {
                     prioridades[i] = 1;
                     break;
                 case ")":
-                    prioridades[i] = 1;
-                    break;
-                case "elevado":
                     prioridades[i] = 2;
                     break;
-                case "por":
+                case "elevado":
                     prioridades[i] = 3;
                     break;
-                case "dividido":
+                case "por":
                     prioridades[i] = 4;
                     break;
-                case "mas":
+                case "dividido":
                     prioridades[i] = 5;
                     break;
-                case "menos":
+                case "mas":
                     prioridades[i] = 6;
                     break;
+                case "menos":
+                    prioridades[i] = 7;
+                    break;
                 default:
-                    prioridades[i] = 5;
+                    prioridades[i] = 0;
             }
         }
     }
     
     public static void numerar(String[] operacion){
-        
+        for (int i = 0; i < 10; i++) {
+            
+        }
     }
 }
