@@ -5,28 +5,37 @@ import java.util.Scanner;
 public class Inciso2 {
 
     public static void main(String[] args) {
-        int aleatorio = -1, respuesta = -1; //Se crean las variables del número aleatorio y respuesta con valores iguales y fuera del rango a evaluar
-        String aux = "|";
-        Scanner escaner = new Scanner(System.in); //Se crea un objeto del tipo Scanner para guardar el valor del número que el usuario deberá guardar
-        aleatorio = (int) (Math.random() * 100);     //Con la función Math.random() se obtiene un valor aleatorio y se guarda en su respectiva variable
+        Scanner sc = new Scanner(System.in);
+        int aleatorio = (int) (Math.random() * 100), respuesta = -1;
+        String aux = "";
         do {
-            System.out.println("Adivine el número desde 0 a 100:");
-            aux = escaner.next();
+            System.out.print("\nAdivine el número entre 0 y 100: ");
+            aux = sc.next();
             aux = aux.replaceAll("[^0-9]", "");
-            if (!("".equalsIgnoreCase(aux))) {
-                respuesta = Integer.valueOf(aux);
+            if (!("".equals(aux))) {
+                respuesta = Integer.parseInt(aux);
                 if (respuesta == aleatorio) {
-                    System.out.println("FELICIDADES! GANÓ!");
+                    System.out.print("¡Adivinó el número!\n");
                 } else {
-                    if (aleatorio < respuesta) {
-                        System.out.println("El número es menor.");
+                    if (respuesta > aleatorio) {
+                        if (respuesta > 100) {
+                            System.out.print("El número debe estar en el rango de 0 y 100");
+                        } else {
+                            System.out.print("El número es menor.");
+                        }
                     } else {
-                        System.out.println("El número es mayor.");
+                        if (respuesta < 0 || respuesta == 0) {
+                            System.out.print("El número debe estar en el rango de 0 y 100");
+                        } else {
+                            System.out.print("El número es mayor");
+                        }
                     }
                 }
             } else {
-                System.out.println("Solo debe ingresar números.");
+                System.out.print("Se debe ingresar solo números.");
             }
-        } while (respuesta != aleatorio);
+
+        } while (aleatorio != respuesta);
+
     }
 }
