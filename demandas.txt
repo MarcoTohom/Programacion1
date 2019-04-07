@@ -1,0 +1,6 @@
+﻿Maria Baltazar|Felipe Solares|13 calle B zona 4 Bocanales|4500.88|
+Carla Moreno|Esteban Cojulun|12 avenida 4-23 zona 1 Guatemala|555.75|
+Luisa Dominguez|Diego Estorez|13 avenida B 27-50 zona 13 Guatemala|4500|
+Ester Morales|Miguel Chum|12 calle 2-97 zona 1 Guatemala|4500.33|
+Rosaura Garcia|Oscar de Leon|2 avenida 3-28 zona 3 Boca del Monte|1500.35|
+Mishel Morataya|Augusto Ordoñez|1 avenida 13-2 zona 3 Guatemala|3500.00|
