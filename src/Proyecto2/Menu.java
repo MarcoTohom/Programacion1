@@ -6,9 +6,10 @@ import java.util.Scanner;
  * @author Marco Antonio Lares Tohom
  */
 public class Menu {
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner (System.in);
-        String opcion="opcion";
+        Scanner sc = new Scanner(System.in);
+        String opcion = "opcion";
         do {
             System.out.println("");
             System.out.println("Eliga una opcion");
@@ -17,10 +18,10 @@ public class Menu {
             System.out.println("3 Agregar veredicto una demanda");
             System.out.println("4 Consultar demanda");
             System.out.println("0 Salir");
-            opcion=sc.next();
-            switch(opcion){
+            opcion = sc.nextLine();
+            switch (opcion) {
                 case "1":
-                    AgregarDemanda.solicitarInformacion();
+                    AgregarDemanda.solicitarAgregarDemanda();
                     break;
                 case "2":
                     AgregarJuez.solicitarAgregarJuez();
