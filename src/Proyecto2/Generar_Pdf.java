@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class Generar_Pdf {
 
-    public static final String DEST = "C:/workplace/Programacion1/Programacion1/Reporte Demanda con Font.pdf";
+    public static final String DEST = "C:/workplac/Programacion1/Programacion1/Reporte Demanda con Font.pdf";
 
     public static void main(String[] args) {
         new Generar_Pdf().crearPDF(DEST);
@@ -28,7 +28,7 @@ public class Generar_Pdf {
             writer = new PdfWriter(destino);
             PdfDocument pdf = new PdfDocument(writer);
             Document doc = new Document(pdf);
-            PdfFont font = PdfFontFactory.createFont(FontConstants.COURIER);
+            PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
             doc.add(new Paragraph("Numero de expediente:").setFont(font));
             doc.add(new Paragraph("Nombre demandante:").setFont(font));
             doc.add(new Paragraph("Nombre demandado:").setFont(font));
@@ -36,14 +36,18 @@ public class Generar_Pdf {
             doc.add(new Paragraph("Resolucion:").setFont(font));
             doc.close();
         } catch (FileNotFoundException ex) {
+            System.err.println("Ha ocurrido un error al localizar la base de datos.");
             System.out.println("Ha ocurrido un error al localizar la base de datos.");
+        } catch (NullPointerException npe) {
+            System.err.print("La dirección a la que se ha intentado acceder e serrónea");
+            System.out.println("La dirección a la que se ha intentado acceder e serrónea");
         } catch (IOException ex) {
-            System.out.println("Ha ocurrido un fallo en la escritura/lectura.");
+            System.err.println("Ha ocurrido un fallo en la escritura/lectura.");
         } finally {
             try {
                 writer.close();
             } catch (IOException ex) {
-                System.out.println("Ha ocurrido un fallo en la escritura/lectura.");
+                System.err.println("Ha ocurrido un fallo en la escritura/lectura.");
             }
         }
 

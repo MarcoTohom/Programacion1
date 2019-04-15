@@ -19,6 +19,7 @@ public class BuscarDemanda {
 
         System.out.println("");
         System.out.println("Ingrese nombre completo de demandante o demandado:");
+        
         terminoDeBusqueda = sc.nextLine();
         terminoDeBusqueda = terminoDeBusqueda.toUpperCase();
 
@@ -55,19 +56,27 @@ public class BuscarDemanda {
     public static int buscarJuez(int pLinea) {
         String registro = "";
         boolean encontrado = false;
+        int linea = 0;
 
         try {
+            
             BufferedReader br = new BufferedReader(new FileReader("jueces.txt"));
+            
             while ((registro = br.readLine()) != null) {
+                
                 String campo[] = registro.split("[^0-9]");
+                int campoInt[] = new int [campo.length];
+                
                 for (int i = 0; i < campo.length; i++) {
-                    System.out.println(campo[i]);
+                    campoInt[i] = Integer.valueOf(campo[i]);
                 }
-                if (campo[0].contains(String.valueOf(pLinea)) /*&& campo[1].contains(pNumeroColegiadoJuez*/) {
+                
+                if (campoInt[0] == pLinea) {
                     encontrado = true;
                     break;
                 }
-                pLinea++;
+                linea++;
+                
             }
             if (encontrado == false) {
                 pLinea = -1;
