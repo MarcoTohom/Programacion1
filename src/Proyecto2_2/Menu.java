@@ -34,6 +34,9 @@ public class Menu {
                 case "0":
                     System.out.print("\nSaliendo...\n");
                     break;
+                case "solicitarBuscarDemanda":
+                    Buscar.solicitarBuscarDemanda();
+                    break;
                 default:
                     System.err.print("\nIntroduzca un valor del menu.\n");
                     break;
