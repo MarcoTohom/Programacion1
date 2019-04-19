@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -29,22 +27,30 @@ public class Buscar {
     }
 
     static int buscarDemanda(String pTerminoDeBusqueda) {
-        List<String> listaRegistro;
         String registro = "";
         int numeroRegistro = 0, caracter = 0;
+        boolean encontrado = false;
         
-        listaRegistro = new ArrayList<>();
         pTerminoDeBusqueda = pTerminoDeBusqueda.toLowerCase();
         
         try {
             InputStream is = new FileInputStream("OJDemandas.txt");
             while (caracter != -1) {
                 caracter = is.read();
-                if ( "#".equals((char)caracter)) {
+                String stringCaracter = String.valueOf((char)caracter);
+                if ( "#".equals(stringCaracter)) {
+                    registro = registro.toLowerCase();
                     if (registro.contains(pTerminoDeBusqueda)) {
-                        listaRegistro.add(registro);
-                        System.out.println(registro);
+                        encontrado = true;
+                        break;
+                        //System.out.println(registro);
+                        /*String[] vectorRegistro = registro.split("[@]");
+                        for (int i = 0; i < vectorRegistro.length; i++) {
+                            System.out.println(vectorRegistro[i]);
+                        }*/
                     }
+                    registro = "";
+                    numeroRegistro++;
                 } else {
                     registro = registro.concat(String.valueOf((char)caracter));
                 }
@@ -53,6 +59,9 @@ public class Buscar {
             System.err.println("Ha ocurrido un error. No se ha podido localizar el archivo.");
         } catch (IOException ex) {
             System.err.println("Ha ocurrido un error de lectura/escritura.");
+        }
+        if (!encontrado) {
+            numeroRegistro = -1;
         }
         return numeroRegistro;
     }
