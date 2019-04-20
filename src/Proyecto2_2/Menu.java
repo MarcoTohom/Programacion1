@@ -32,16 +32,13 @@ public class Menu {
                     case "4":
                         System.out.print("\nConsultar demanda");
                         break;
-                    case "0":
-                        System.out.print("\nSaliendo...\n");
-                        break;
                     default:
                         JOptionPane.showMessageDialog(null, "\nIntroduzca un valor del menu.\n");
                         break;
                 }
             } while (!("0".equalsIgnoreCase(opcion)));
-        } catch (Exception ioe) {
-            JOptionPane.showMessageDialog(null, "\nHa ocurrido un erros inesperado\n");
+        } catch (Exception e) {
+            
         }
     }
 }

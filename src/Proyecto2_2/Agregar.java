@@ -11,27 +11,21 @@ import javax.swing.JOptionPane;
  */
 public class Agregar {
 
-    static Scanner sc = new Scanner(System.in);
-
     static void solicitarAgregarDemanda() {
-        String nombreDemandante = "", nombreDemandado = "", direccionDemandado = "", montoPension = "",
-                registro = "";
+        String nombreDemandante = "", nombreDemandado = "", direccionDemandado = "", registro = "";
+        int montoPension = -1;
         nombreDemandante = JOptionPane.showInputDialog("\nIngrese nombre de demandante:\n");
         nombreDemandado = JOptionPane.showInputDialog("\nIngrese nombre de demandado:\n");
-
-        //Se valida de que no esté pre-inscrita la demanda
-        if (Buscar.buscarDemanda(nombreDemandante) == Buscar.buscarDemanda(nombreDemandado)) {
+        //Se valida de que no esté inscrita la demanda
+        if (Buscar.buscarDemanda(nombreDemandante) != -1 && Buscar.buscarDemanda(nombreDemandado) != -1 && Buscar.buscarDemanda(nombreDemandante) == Buscar.buscarDemanda(nombreDemandado)) {
             JOptionPane.showMessageDialog(null, "\nLa demanda ya está registrada en la base de datos.\n");
         } else {
-            System.out.print("\nIngrse direccion del demandado: ");
-            direccionDemandado = sc.nextLine();
-            System.out.print("\nIngrese el monto de la pension: ");
-            montoPension = sc.nextLine();
-            registro = registro.concat(nombreDemandante).concat("…").concat(nombreDemandado).concat("…").concat(direccionDemandado).concat("…").concat(montoPension).concat("…").concat("Þ");
+            direccionDemandado = JOptionPane.showInputDialog("Ingrse direccion del demandado:");
+            montoPension = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el monto de la pension:"));
+            registro = registro.concat(nombreDemandante).concat("@").concat(nombreDemandado).concat("@").concat(direccionDemandado).concat("@").concat(String.valueOf(montoPension)).concat("@").concat("#");
             registro = registro.toLowerCase();
             agregarDemanda(registro);
         }
-
     }
 
     static void agregarDemanda(String pRegistro) {
@@ -40,23 +34,24 @@ public class Agregar {
             byte[] charPRegistro = pRegistro.getBytes();
             fos.write(charPRegistro);
         } catch (FileNotFoundException fnfe) {
-            System.err.print("\nNo se ha podido encontrar la base de datos.\n");
+            JOptionPane.showMessageDialog(null, "\nNo se ha podido encontrar la base de datos.\n");
         } catch (IOException ioe) {
-            System.err.print("\nHa ocurrido un error en la escritura/lectura.\n");
+            JOptionPane.showMessageDialog(null, "\nHa ocurrido un error al tratar de acceder a la base de datos\n");
         }
     }
 
     static void solicitarAgregarJuez() {
         String registro = "";
-        int lineaDemanda = 0, lineaJuez = 0, numeroColegiadoJuez;
-        lineaDemanda = Buscar.solicitarBuscarDemanda();
-        if (lineaDemanda != -1) {
-            lineaJuez = Buscar.solicitarBuscarJuez();
-            if (lineaJuez != -1) {
-                numeroColegiadoJuez = Integer.parseInt(JOptionPane.showInputDialog("\nIngrese el numero de colegiado del juez\n"));
-                
+        int numeroColegiadoJuez = -1, numeroRegistro = -1;
+        numeroRegistro = Buscar.solicitarBuscarDemanda();
+        if (numeroRegistro != -1) {
+            numeroRegistro = Buscar.buscarJuez(numeroRegistro, false);
+            if (numeroRegistro != -1) {
+                numeroColegiadoJuez = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de colegiado del juez:"));
+                registro = registro.concat(String.valueOf(numeroRegistro)).concat("@").concat(String.valueOf(numeroColegiadoJuez).concat("@#"));
+                Agregar.agregarDemanda(registro);
             } else {
-                JOptionPane.showMessageDialog(null, "\nEl juez ya se encuentra asignado a la demanda\n");
+                JOptionPane.showMessageDialog(null, "El juez ya se encuentra asignado", "Error", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
