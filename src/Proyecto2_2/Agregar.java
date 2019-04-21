@@ -3,7 +3,6 @@ package Proyecto2_2;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,9 +33,9 @@ public class Agregar {
             byte[] charPRegistro = pRegistro.getBytes();
             fos.write(charPRegistro);
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "\nNo se ha podido encontrar la base de datos.\n");
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "\nHa ocurrido un error al tratar de acceder a la base de datos\n");
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -62,9 +61,42 @@ public class Agregar {
             byte[] charPRegistro = pRegistro.getBytes();
             fos.write(charPRegistro);
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "\nNo se ha podido encontrar la base de datos.\n");
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "\nHa ocurrido un error al tratar de acceder a la base de datos\n");
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    static void solicitarAgregarVeredicto() {
+        String registro = "";
+        int numeroRegistro = -1, veredicto = 0;
+        numeroRegistro = Buscar.solicitarBuscarDemanda(); //Se busca el numero de registro de la demanda en las demandas
+        if (numeroRegistro != -1) { //Si es -1 no existe la demanda
+            numeroRegistro = Buscar.buscarJuez(numeroRegistro, false); //Se busca el numero de registro de la demanda en los jueces
+            if (numeroRegistro != -1) { //Si es -1 no existe juez asignado
+                numeroRegistro = Buscar.buscarVeredicto(numeroRegistro); //Se busca el numero de registro de la demanda en los veredictos
+                if (numeroRegistro != -1) { //Si es -1 no existe veredicto asignado
+                    veredicto = JOptionPane.showConfirmDialog(null, "¿Ganó la demanda?", "Ingreso", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (veredicto != -1) {
+                        registro = registro.concat(String.valueOf(numeroRegistro)+"@"+String.valueOf(veredicto)+"@#");
+                        Agregar.agregarVeredicto(registro);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ingreso erroneo", "Error", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+    
+    static void agregarVeredicto(String pRegistro) {
+        try {
+            FileOutputStream fos = new FileOutputStream("OJVeredictos.txt", true);
+            byte[] charPRegistro = pRegistro.getBytes();
+            fos.write(charPRegistro);
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
 }

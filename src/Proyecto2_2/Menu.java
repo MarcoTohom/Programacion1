@@ -1,6 +1,5 @@
 package Proyecto2_2;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /**
@@ -9,14 +8,15 @@ import javax.swing.JOptionPane;
 public class Menu {
 
     public static void main(String[] args) {
-        String opcion = "opcion";
         try {
+            String opcion = "opcion";
             do {
                 opcion = JOptionPane.showInputDialog("\nEliga una opcion:"
                         + "\n1 Agregar demanda."
                         + "\n2 Agregar juez a una demanda."
                         + "\n3 Agregar veredicto una demanda"
                         + "\n4 Consultar demanda"
+                        + "\n5 Eliminar demanda"
                         + "\n0 Salir\n"
                 );
                 switch (opcion) {
@@ -27,18 +27,21 @@ public class Menu {
                         Agregar.solicitarAgregarJuez();
                         break;
                     case "3":
-                        System.out.print("\nAgregar veredicto una demanda");
+                        Agregar.solicitarAgregarVeredicto();
                         break;
                     case "4":
-                        System.out.print("\nConsultar demanda");
+                        Consultar.solicitarConsultar();
+                        break;
+                    case "5":
+                        System.out.println("\nEliminar demanda");
                         break;
                     default:
-                        JOptionPane.showMessageDialog(null, "\nIntroduzca un valor del menu.\n");
+                        JOptionPane.showMessageDialog(null, "Introduzca un valor del menu.", "Error", JOptionPane.ERROR_MESSAGE);
                         break;
                 }
             } while (!("0".equalsIgnoreCase(opcion)));
-        } catch (Exception e) {
-            
+        } catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error inesperado", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
