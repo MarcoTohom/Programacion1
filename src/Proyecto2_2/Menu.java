@@ -20,6 +20,9 @@ public class Menu {
                         + "\n0 Salir\n"
                 );
                 switch (opcion) {
+                    case "0":
+                        //se agrega el caso 0 para que no vaya a default ni marque error
+                        break;
                     case "1":
                         Agregar.solicitarAgregarDemanda();
                         break;
@@ -33,7 +36,7 @@ public class Menu {
                         Consultar.solicitarConsultar();
                         break;
                     case "5":
-                        System.out.println("\nEliminar demanda");
+                        JOptionPane.showMessageDialog(null, "Eliminar demanda");
                         break;
                     default:
                         JOptionPane.showMessageDialog(null, "Introduzca un valor del menu.", "Error", JOptionPane.ERROR_MESSAGE);

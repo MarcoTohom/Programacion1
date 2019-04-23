@@ -11,19 +11,23 @@ import javax.swing.JOptionPane;
 public class Agregar {
 
     static void solicitarAgregarDemanda() {
-        String nombreDemandante = "", nombreDemandado = "", direccionDemandado = "", registro = "";
-        int montoPension = -1;
-        nombreDemandante = JOptionPane.showInputDialog("\nIngrese nombre de demandante:\n");
-        nombreDemandado = JOptionPane.showInputDialog("\nIngrese nombre de demandado:\n");
-        //Se valida de que no esté inscrita la demanda
-        if (Buscar.buscarDemanda(nombreDemandante) != -1 && Buscar.buscarDemanda(nombreDemandado) != -1 && Buscar.buscarDemanda(nombreDemandante) == Buscar.buscarDemanda(nombreDemandado)) {
-            JOptionPane.showMessageDialog(null, "\nLa demanda ya está registrada en la base de datos.\n");
-        } else {
-            direccionDemandado = JOptionPane.showInputDialog("Ingrse direccion del demandado:");
-            montoPension = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el monto de la pension:"));
-            registro = registro.concat(nombreDemandante).concat("@").concat(nombreDemandado).concat("@").concat(direccionDemandado).concat("@").concat(String.valueOf(montoPension)).concat("@").concat("#");
-            registro = registro.toLowerCase();
-            agregarDemanda(registro);
+        try {
+            String nombreDemandante = "", nombreDemandado = "", direccionDemandado = "", registro = "";
+            int montoPension = -1;
+            nombreDemandante = JOptionPane.showInputDialog("\nIngrese nombre de demandante:\n");
+            nombreDemandado = JOptionPane.showInputDialog("\nIngrese nombre de demandado:\n");
+            //Se valida de que no esté inscrita la demanda
+            if (Buscar.buscarDemanda(nombreDemandante, nombreDemandado) != -1) {
+                JOptionPane.showMessageDialog(null, "\nLa demanda ya está registrada en la base de datos.\n");
+            } else {
+                direccionDemandado = JOptionPane.showInputDialog("Ingrse direccion del demandado:");
+                montoPension = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el monto de la pension:"));
+                registro = registro.concat(nombreDemandante).concat("@").concat(nombreDemandado).concat("@").concat(direccionDemandado).concat("@").concat(String.valueOf(montoPension)).concat("@").concat("#");
+                registro = registro.toLowerCase();
+                agregarDemanda(registro);
+            }
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, "Se ha ingresado un valor erróneo", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -66,7 +70,7 @@ public class Agregar {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     static void solicitarAgregarVeredicto() {
         String registro = "";
         int numeroRegistro = -1, veredicto = 0;
@@ -78,7 +82,7 @@ public class Agregar {
                 if (numeroRegistro != -1) { //Si es -1 no existe veredicto asignado
                     veredicto = JOptionPane.showConfirmDialog(null, "¿Ganó la demanda?", "Ingreso", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (veredicto != -1) {
-                        registro = registro.concat(String.valueOf(numeroRegistro)+"@"+String.valueOf(veredicto)+"@#");
+                        registro = registro.concat(String.valueOf(numeroRegistro) + "@" + String.valueOf(veredicto) + "@#");
                         Agregar.agregarVeredicto(registro);
                     } else {
                         JOptionPane.showMessageDialog(null, "Ingreso erroneo", "Error", JOptionPane.WARNING_MESSAGE);
@@ -87,7 +91,7 @@ public class Agregar {
             }
         }
     }
-    
+
     static void agregarVeredicto(String pRegistro) {
         try {
             FileOutputStream fos = new FileOutputStream("OJVeredictos.txt", true);

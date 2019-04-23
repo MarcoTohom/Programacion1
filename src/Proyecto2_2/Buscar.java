@@ -12,19 +12,21 @@ import javax.swing.JOptionPane;
 public class Buscar {
 
     static int solicitarBuscarDemanda() {
-        String terminoDeBusqueda = "";
+        String nombreDemandante = "", nombreDemandado = "";
         int numeroRegistro = 0;
-        terminoDeBusqueda = JOptionPane.showInputDialog(null, "Ingrese nombre completo de demandante o demandado", "Ingreso", JOptionPane.QUESTION_MESSAGE);
-        terminoDeBusqueda = terminoDeBusqueda.toLowerCase();
-        numeroRegistro = Buscar.buscarDemanda(terminoDeBusqueda);
+        nombreDemandante = JOptionPane.showInputDialog(null, "Ingrese nombre completo de demandante", "Ingreso", JOptionPane.QUESTION_MESSAGE);
+        nombreDemandado = JOptionPane.showInputDialog(null, "Ingrese nombre completo de demandante", "Ingreso", JOptionPane.QUESTION_MESSAGE);
+        nombreDemandante = nombreDemandante.toLowerCase();
+        nombreDemandado = nombreDemandado.toLowerCase();
+        numeroRegistro = Buscar.buscarDemanda(nombreDemandante, nombreDemandado);
         return numeroRegistro;
     }
 
-    static int buscarDemanda(String pTerminoDeBusqueda) {
+    static int buscarDemanda(String pNombreDemandante, String pNombreDemandado) {
         String registro = "";
         int numeroRegistro = 0, caracter = 0;
         boolean encontrado = false;
-        pTerminoDeBusqueda = pTerminoDeBusqueda.toLowerCase();
+        pNombreDemandante = pNombreDemandante.toLowerCase();
         try {
             InputStream is = new FileInputStream("OJDemandas.txt");
             while (caracter != -1) {
@@ -33,7 +35,12 @@ public class Buscar {
                 if ("#".equals(stringCaracter)) {
                     numeroRegistro++;
                     registro = registro.toLowerCase();
-                    if (registro.contains(pTerminoDeBusqueda)) {
+                    String campo[] = registro.split("[@]");
+
+                    if (campo[0].contains(pNombreDemandante) && campo[1].contains(pNombreDemandado)) {
+                        for (int i = 0; i < campo.length; i++) {
+                            JOptionPane.showMessageDialog(null, "Campo: " + campo[i], "Registro", JOptionPane.INFORMATION_MESSAGE);
+                        }
                         encontrado = true;
                         break;
                     }
