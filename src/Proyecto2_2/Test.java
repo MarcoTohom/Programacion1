@@ -10,48 +10,50 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Marco
+ * @author Marco Antonio Lares Tohom
  */
 public class Test {
+
     static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         try {
-            String opcion = JOptionPane.showInputDialog("Ingrese opcion:");
-            switch (opcion) {
-                case "consultarDemanda":
-                    testConsultarDemanda();
-                    break;
-                case "consultarJuez":
-                    testConsultarJuez();
-                    break;
-                default:
-                    System.out.println("Opcion incorrecta");
-                    break;
-            }
+            String opcion;
+            do {
+                opcion = JOptionPane.showInputDialog("Ingrese opcion:");
+                switch (opcion) {
+                    case "consultarDemanda":
+                        testConsultarDemanda();
+                        break;
+                    case "consultarJuez":
+                        testConsultarJuez();
+                        break;
+                    default:
+                        System.out.println("Opcion incorrecta");
+                        break;
+                }
+            } while (!("salir".equals(opcion)));
         } catch (HeadlessException he) {
             System.out.println("Error");
         } catch (NumberFormatException nfe) {
             System.out.println("Error nfe");
         }
     }
-    
+
     static void testConsultarJuez() {
         try {
-            System.out.println("Ingrese numero de registro:");
-            int numeroRegistro = sc.nextInt();
+            int numeroRegistro = Integer.parseInt(JOptionPane.showInputDialog("Ingrese numero de registro:"));
             String registroJuez = Consultar.consultarJuez(numeroRegistro);
-            System.out.println("Registro de juez: "+registroJuez);
+            JOptionPane.showMessageDialog(null, "Registro de juez: " + registroJuez);
         } catch (NumberFormatException nfe) {
-            
+            JOptionPane.showMessageDialog(null, "Error");
         }
     }
+
     static void testConsultarDemanda() {
-        System.out.println("Nombre demandante:");
-        String nombreDemandante = sc.nextLine();
-        System.out.println("Nombre demandado:");
-        String nombreDemandado = sc.nextLine();
+        String nombreDemandante = JOptionPane.showInputDialog("Nombre demandante: ");
+        String nombreDemandado = JOptionPane.showInputDialog("Nombre demandante: ");
         String registro = Consultar.consultarDemanda(nombreDemandante, nombreDemandado);
-        System.out.println("Registro "+registro);
+        JOptionPane.showMessageDialog(null, "Registro: " + registro);
     }
 }

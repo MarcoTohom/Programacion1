@@ -50,6 +50,7 @@ public class Consultar {
         boolean encontrado = true;
         //Se hace la busqueda en minusculas
         pNombreDemandante = pNombreDemandante.toLowerCase();
+        pNombreDemandado = pNombreDemandado.toLowerCase();
         try {
             InputStream is = new FileInputStream("OJDemandas.txt");
             while (caracter != -1) {
@@ -58,13 +59,23 @@ public class Consultar {
                 if ("#".equals(stringCaracter)) {
                     numeroRegistro++;
                     registro = registro.toLowerCase();
-                    String[] campo = registro.split("[@]");
-                    if (campo[0].contains(pNombreDemandante) && campo[1].contains(pNombreDemandado)) {
+                    String[] campoDemandas = registro.split("[@]");
+                    if (campoDemandas[0].contains(pNombreDemandante) && campoDemandas[1].contains(pNombreDemandado)) {
+                        JOptionPane.showMessageDialog(null, numeroRegistro);
                         String registroJuez = Consultar.consultarJuez(numeroRegistro);
                         if (!("empty".equals(registroJuez))) {
-                            String[] campoJuez = registroJuez.split("[@]");
-                            registro.concat(campoJuez[1] + "@");
-                            JOptionPane.showMessageDialog(null, registro);
+                            String campoJuez[] = registroJuez.split("[@]");
+                            registro = registro.concat(registroJuez + "@");
+                            //<editor-fold defaultstate="collapsed" desc=" Prueba ">
+                            /*
+                                if (campoJuez.length > 1) {
+                                    registro.concat(campoJuez[1] + "@");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Indice erroneo", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                                JOptionPane.showMessageDialog(null, registro);
+                             */
+                            //</editor-fold>
                         }
                         encontrado = true;
                         break;
@@ -76,9 +87,9 @@ public class Consultar {
             }
             is.close();
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         return registro;
     }
@@ -95,10 +106,6 @@ public class Consultar {
                 if ("#".equals(stringCaracter)) {
                     registro = registro.toLowerCase();
                     String campo[] = registro.split("[@]");
-                    //Prueba
-                    /*for (int i = 0; i < campo.length; i++) {
-                        System.out.println(campo[i]);
-                    }*/
                     if (Integer.parseInt(campo[0]) == pNumeroRegistro) {
                         registro = campo[1];
                         encontrado = true;
@@ -111,9 +118,9 @@ public class Consultar {
             }
             is.close();
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         if (!encontrado) {
             registro = "empty";
@@ -121,9 +128,37 @@ public class Consultar {
         return registro;
     }
 
-    static String consultarGeneral() {
-        String registro = "empty";
-
+    static String consultaVeredicto(int pNumeroRegistro) {
+        String registro = "";
+        int caracter = 0;
+        boolean encontrado = true;
+        try {
+            InputStream is = new FileInputStream("OJVeredictos.txt");
+            while (caracter != -1) {
+                caracter = is.read();
+                String stringCaracter = String.valueOf((char) caracter);
+                if ("#".equals(stringCaracter)) {
+                    registro = registro.toLowerCase();
+                    String campo[] = registro.split("[@]");
+                    if (Integer.parseInt(campo[0]) == pNumeroRegistro) {
+                        registro = campo[1];
+                        encontrado = true;
+                        break;
+                    }
+                    registro = "";
+                } else {
+                    registro = registro.concat(stringCaracter);
+                }
+            }
+            is.close();
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (!encontrado) {
+            registro = "empty";
+        }
         return registro;
     }
 }
