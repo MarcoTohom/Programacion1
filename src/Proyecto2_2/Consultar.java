@@ -64,7 +64,6 @@ public class Consultar {
                         JOptionPane.showMessageDialog(null, numeroRegistro);
                         String registroJuez = Consultar.consultarJuez(numeroRegistro);
                         if (!("empty".equals(registroJuez))) {
-                            String campoJuez[] = registroJuez.split("[@]");
                             registro = registro.concat(registroJuez + "@");
                             //<editor-fold defaultstate="collapsed" desc=" Prueba ">
                             /*
@@ -76,6 +75,10 @@ public class Consultar {
                                 JOptionPane.showMessageDialog(null, registro);
                              */
                             //</editor-fold>
+                            String registroVeredicto = Consultar.consultarVeredicto(numeroRegistro);
+                            if (!("empty".equals(registroVeredicto))) {
+                                registro = registro.concat(registroVeredicto + "@");
+                            }
                         }
                         encontrado = true;
                         break;
@@ -128,7 +131,7 @@ public class Consultar {
         return registro;
     }
 
-    static String consultaVeredicto(int pNumeroRegistro) {
+    static String consultarVeredicto(int pNumeroRegistro) {
         String registro = "";
         int caracter = 0;
         boolean encontrado = true;
