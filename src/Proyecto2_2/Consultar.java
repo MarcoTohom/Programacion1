@@ -1,5 +1,9 @@
 package Proyecto2_2;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +27,7 @@ public class Consultar {
                         Consultar.solicitarConsultarDemanda();
                         break;
                     case "2":
-                        //Consultar.consultarGeneral
+                        Consultar.consultarGeneral();
                         break;
                     default:
                         JOptionPane.showMessageDialog(null, "Opcion incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
@@ -40,14 +44,17 @@ public class Consultar {
         String nombreDemandante = "", nombreDemandado = "";
         nombreDemandante = JOptionPane.showInputDialog(null, "Ingrese nombre completo del demandante", "Ingreso", JOptionPane.INFORMATION_MESSAGE);
         nombreDemandado = JOptionPane.showInputDialog(null, "Ingrese nombre completo del demandado", "Ingreso", JOptionPane.INFORMATION_MESSAGE);
-        Consultar.consultarDemanda(nombreDemandante, nombreDemandado);
+        String registro = Consultar.consultarDemanda(nombreDemandante, nombreDemandado);
+        if (registro.contains("empty")) {
+            JOptionPane.showMessageDialog(null, "Verifique que los datos ingresados son correctos", "Demanda no encontrada", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     static String consultarDemanda(String pNombreDemandante, String pNombreDemandado) {
         //Declaracion de variables
         String registro = "";
         int numeroRegistro = -1, caracter = 0;
-        boolean encontrado = true;
+        boolean encontrado = false;
         //Se hace la busqueda en minusculas
         pNombreDemandante = pNombreDemandante.toLowerCase();
         pNombreDemandado = pNombreDemandado.toLowerCase();
@@ -61,8 +68,8 @@ public class Consultar {
                     registro = registro.toLowerCase();
                     String[] campoDemandas = registro.split("[@]");
                     if (campoDemandas[0].contains(pNombreDemandante) && campoDemandas[1].contains(pNombreDemandado)) {
-                        JOptionPane.showMessageDialog(null, numeroRegistro);
-                        String registroJuez = Consultar.consultarJuez(numeroRegistro);
+                        //JOptionPane.showMessageDialog(null, numeroRegistro); numero de registro
+                        String registroJuez = Consultar.consultarJuezVeredicto(numeroRegistro, true);
                         if (!("empty".equals(registroJuez))) {
                             registro = registro.concat(registroJuez + "@");
                             //<editor-fold defaultstate="collapsed" desc=" Prueba ">
@@ -75,11 +82,12 @@ public class Consultar {
                                 JOptionPane.showMessageDialog(null, registro);
                              */
                             //</editor-fold>
-                            String registroVeredicto = Consultar.consultarVeredicto(numeroRegistro);
+                            String registroVeredicto = Consultar.consultarJuezVeredicto(numeroRegistro, false);
                             if (!("empty".equals(registroVeredicto))) {
                                 registro = registro.concat(registroVeredicto + "@");
                             }
                         }
+                        generarConsultaDemanda(registro);
                         encontrado = true;
                         break;
                     }
@@ -94,13 +102,17 @@ public class Consultar {
         } catch (IOException ioe) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        if (!encontrado) {
+            registro = "empty";
+        }
         return registro;
     }
 
     static String consultarJuez(int pNumeroRegistro) {
+        //<editor-fold defaultstate="collapsed" desc=" Consultar Juez antiguo ">
         String registro = "";
         int caracter = 0;
-        boolean encontrado = true;
+        boolean encontrado = false;
         try {
             InputStream is = new FileInputStream("OJJueces.txt");
             while (caracter != -1) {
@@ -129,9 +141,11 @@ public class Consultar {
             registro = "empty";
         }
         return registro;
+        //</editor-fold>
     }
 
     static String consultarVeredicto(int pNumeroRegistro) {
+        //<editor-fold defaultstate="collapsed" desc=" Consultar Veredicto antiguo ">
         String registro = "";
         int caracter = 0;
         boolean encontrado = true;
@@ -163,5 +177,166 @@ public class Consultar {
             registro = "empty";
         }
         return registro;
+        //</editor-fold>
+    }
+
+    static String consultarJuezVeredicto(int pNumeroRegistro, boolean juezVeredicto) {
+        String registro = "", direccion = "";
+        int caracter = 0;
+        boolean encontrado = false;
+        if (juezVeredicto) {
+            direccion = "OJJueces.txt"; //Si es verdadero buscará en Jueces
+        } else {
+            direccion = "OJVeredictos.txt"; //Si es falso buscará en Veredictos
+        }
+        try {
+            InputStream is = new FileInputStream(direccion);
+            while (caracter != -1) {
+                caracter = is.read();
+                String stringCaracter = String.valueOf((char) caracter);
+                if ("#".equals(stringCaracter)) {
+                    registro = registro.toLowerCase();
+                    String campo[] = registro.split("[@]");
+                    if (Integer.parseInt(campo[0]) == pNumeroRegistro) {
+                        registro = campo[1];
+                        encontrado = true;
+                        break;
+                    }
+                    registro = "";
+                } else {
+                    registro = registro.concat(stringCaracter);
+                }
+            }
+            is.close();
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (!encontrado) {
+            registro = "empty";
+        }
+        return registro;
+    }
+
+    static void consultarGeneral() {
+        try {
+            PdfWriter pw = new PdfWriter("Consulta.pdf");
+            PdfDocument pd = new PdfDocument(pw);
+            Document doc = new Document(pd);
+            String registro = "";
+            int numeroRegistro = 0;
+            do {
+                registro = Consultar.consultarDemanda(numeroRegistro);
+                if (!(registro.contains("empty"))) {
+                    registro = registro.toUpperCase();
+                    String[] campo = registro.split("[@]");
+                    campo[0] = campo[0].replaceAll("[^a-zA-Z ]", "");
+                    doc.add(new Paragraph("Nombre de demandante: " + campo[0]));
+                    doc.add(new Paragraph("Nombre de demandado: " + campo[1]));
+                    doc.add(new Paragraph("Direccion demandado: " + campo[2]));
+                    doc.add(new Paragraph("Monto pension: " + campo[3]));
+                    if (campo.length > 4) {
+                        doc.add(new Paragraph("Colegiado de juez asignado: " + campo[4]));
+                        if (campo.length > 5) {
+                            String veredicto;
+                            if (campo[5].equals("1")) {
+                                veredicto = "Demanda ganada.";
+                            } else {
+                                veredicto = "Demanda no ganada.";
+                            }
+                            doc.add(new Paragraph("Veredicto: " + veredicto));
+                        }
+                    }
+                    doc.add(new Paragraph("\n\n"));
+                } else {
+                    break;
+                }
+                numeroRegistro++;
+            } while (!(registro.contains("empty")));
+            doc.close();
+            pd.close();
+            pw.close();
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    static String consultarDemanda(int pNumeroRegistro) {
+        String registro = "";
+        int caracter = 0, numeroRegistro = -1;
+        boolean encontrado = false;
+        try {
+            InputStream is = new FileInputStream("OJDemandas.txt");
+            while (caracter != -1) {
+                caracter = is.read();
+                String stringCaracter = String.valueOf((char) caracter);
+                if ("#".equals(stringCaracter)) {
+                    numeroRegistro++;
+                    if (numeroRegistro == pNumeroRegistro) {
+                        String registroJuez = Consultar.consultarJuezVeredicto(numeroRegistro, true);
+                        if (!("empty".equals(registroJuez))) {
+                            registro = registro.concat(registroJuez + "@");
+                            String registroVeredicto = Consultar.consultarJuezVeredicto(numeroRegistro, false);
+                            if (!("empty".equals(registroVeredicto))) {
+                                registro = registro.concat(registroVeredicto + "@");
+                            }
+                        }
+                        encontrado = true;
+                        break;
+                    }
+                    registro = "";
+                } else {
+                    registro = registro.concat(stringCaracter);
+                }
+            }
+            is.close();
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (!encontrado) {
+            registro = "empty";
+        }
+        return registro;
+    }
+
+    static void generarConsultaDemanda(String pRegistro) {
+        pRegistro = pRegistro.toUpperCase();
+        String[] campo = pRegistro.split("[@]");
+        campo[0] = campo[0].replace("[^a-zA-Z ]", "");
+        try {
+            PdfWriter pw = new PdfWriter("Consulta.pdf");
+            PdfDocument pd = new PdfDocument(pw);
+            Document doc = new Document(pd);
+
+            doc.add(new Paragraph("Nombre de demandante: " + campo[0]));
+            doc.add(new Paragraph("Nombre de demandado: " + campo[1]));
+            doc.add(new Paragraph("Direccion demandado: " + campo[2]));
+            doc.add(new Paragraph("Monto pension: " + campo[3]));
+            if (campo.length > 4) {
+                doc.add(new Paragraph("Colegiado de juez asignado: " + campo[4]));
+                if (campo.length > 5) {
+                    String veredicto;
+                    if (campo[5].equals("1")) {
+                        veredicto = "Demanda ganada.";
+                    } else {
+                        veredicto = "Demanda no ganada.";
+                    }
+                    doc.add(new Paragraph("Veredicto: " + veredicto + "\n\n"));
+                }
+            }
+
+            doc.close();
+            pd.close();
+            pw.close();
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

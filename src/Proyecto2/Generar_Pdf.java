@@ -23,11 +23,11 @@ public class Generar_Pdf {
 
     public static void crearPDF(String destino) {
 
-        PdfWriter writer = null;
+        PdfWriter pw = null;
         try {
-            writer = new PdfWriter(destino);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document doc = new Document(pdf);
+            pw = new PdfWriter(destino);
+            PdfDocument pd = new PdfDocument(pw);
+            Document doc = new Document(pd);
             PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
             doc.add(new Paragraph("Numero de expediente:").setFont(font));
             doc.add(new Paragraph("Nombre demandante:").setFont(font));
@@ -45,7 +45,7 @@ public class Generar_Pdf {
             System.err.println("Ha ocurrido un fallo en la escritura/lectura.");
         } finally {
             try {
-                writer.close();
+                pw.close();
             } catch (IOException ex) {
                 System.err.println("Ha ocurrido un fallo en la escritura/lectura.");
             }
