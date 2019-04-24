@@ -38,9 +38,6 @@ public class Buscar {
                     String campo[] = registro.split("[@]");
 
                     if (campo[0].contains(pNombreDemandante) && campo[1].contains(pNombreDemandado)) {
-                        for (int i = 0; i < campo.length; i++) {
-                            JOptionPane.showMessageDialog(null, "Campo: " + campo[i], "Registro", JOptionPane.INFORMATION_MESSAGE);
-                        }
                         encontrado = true;
                         break;
                     }

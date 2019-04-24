@@ -36,7 +36,7 @@ public class Menu {
                         Consultar.solicitarConsultar();
                         break;
                     case "5":
-                        JOptionPane.showMessageDialog(null, "Eliminar demanda");
+                        Eliminar.solicitarEliminarDemanda();
                         break;
                     default:
                         JOptionPane.showMessageDialog(null, "Introduzca un valor del menu.", "Error", JOptionPane.ERROR_MESSAGE);

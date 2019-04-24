@@ -22,11 +22,19 @@ public class Test {
             do {
                 opcion = JOptionPane.showInputDialog("Ingrese opcion:");
                 switch (opcion) {
+                    //Se agrega el caso para que no marque error
+                    case "salir":
+                        break;
+                    //Casos de Consultar
                     case "consultarDemanda":
                         testConsultarDemanda();
                         break;
                     case "consultarJuez":
                         testConsultarJuez();
+                        break;
+                    //Casos de Eliminar
+                    case "consultarDemandaEliminada":
+                        testConsultarDemandaEliminada();
                         break;
                     default:
                         System.out.println("Opcion incorrecta");
@@ -40,6 +48,7 @@ public class Test {
         }
     }
 
+    //Metodos de test para la clase Consultar
     static void testConsultarJuez() {
         try {
             int numeroRegistro = Integer.parseInt(JOptionPane.showInputDialog("Ingrese numero de registro:"));
@@ -55,5 +64,12 @@ public class Test {
         String nombreDemandado = JOptionPane.showInputDialog("Nombre demandante: ");
         String registro = Consultar.consultarDemanda(nombreDemandante, nombreDemandado);
         JOptionPane.showMessageDialog(null, "Registro: " + registro);
+    }
+    
+    //Metodos de test para la clase Eliminar
+    static void testConsultarDemandaEliminada() {
+        int numeroRegistro = Integer.valueOf(JOptionPane.showInputDialog(null, "Numero de registro", "Ingreso", JOptionPane.INFORMATION_MESSAGE));
+        boolean eliminado = Eliminar.consultarDemandaEliminada(numeroRegistro);
+        JOptionPane.showMessageDialog(null, "Estado eliminado: "+eliminado, "Salida", JOptionPane.INFORMATION_MESSAGE);
     }
 }
