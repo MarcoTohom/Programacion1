@@ -36,6 +36,9 @@ public class Test {
                     case "consultarJuez":
                         testConsultarJuez();
                         break;
+                    case "cantidadDeRegistros":
+                        testCantidadDeRegistros();
+                        break;
                     //Casos de Eliminar
                     case "consultarDemandaEliminada":
                         testConsultarDemandaEliminada();
@@ -46,9 +49,9 @@ public class Test {
                 }
             } while (!("salir".equals(opcion)));
         } catch (HeadlessException he) {
-            System.out.println("Error");
+            JOptionPane.showMessageDialog(null, "Error");
         } catch (NumberFormatException nfe) {
-            System.out.println("Error nfe");
+            JOptionPane.showMessageDialog(null, "Error");
         }
     }
     
@@ -77,9 +80,14 @@ public class Test {
         JOptionPane.showMessageDialog(null, "Registro: " + registro);
     }
     
+    static void testCantidadDeRegistros() {
+        int numeroRegistro = Consultar.cantidaDeRegistros();
+        JOptionPane.showMessageDialog(null, numeroRegistro);
+    }
+    
     //Metodos de test para la clase Eliminar
     static void testConsultarDemandaEliminada() {
-        int numeroRegistro = Integer.valueOf(JOptionPane.showInputDialog(null, "Numero de registro", "Ingreso", JOptionPane.INFORMATION_MESSAGE));
+        int numeroRegistro = Integer.valueOf(JOptionPane.showInputDialog(null, "Numero de registro", "Ingreso", JOptionPane.QUESTION_MESSAGE));
         boolean eliminado = Eliminar.consultarDemandaEliminada(numeroRegistro);
         JOptionPane.showMessageDialog(null, "Estado eliminado: "+eliminado, "Salida", JOptionPane.INFORMATION_MESSAGE);
     }

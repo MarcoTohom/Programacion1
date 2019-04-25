@@ -21,7 +21,7 @@ public class Consultar {
             do {
                 tipoConsulta = JOptionPane.showInputDialog(null, "Eliga el tipo de consulta:"
                         + "\n1. Por demanda"
-                        + "\n2. General", "Ingreso", JOptionPane.INFORMATION_MESSAGE);
+                        + "\n2. General", "Ingreso", JOptionPane.QUESTION_MESSAGE);
                 switch (tipoConsulta) {
                     case "1":
                         Consultar.solicitarConsultarDemanda();
@@ -42,11 +42,13 @@ public class Consultar {
 
     static void solicitarConsultarDemanda() {
         String nombreDemandante = "", nombreDemandado = "";
-        nombreDemandante = JOptionPane.showInputDialog(null, "Ingrese nombre completo del demandante", "Ingreso", JOptionPane.INFORMATION_MESSAGE);
-        nombreDemandado = JOptionPane.showInputDialog(null, "Ingrese nombre completo del demandado", "Ingreso", JOptionPane.INFORMATION_MESSAGE);
+        nombreDemandante = JOptionPane.showInputDialog(null, "Ingrese nombre completo del demandante", "Ingreso", JOptionPane.QUESTION_MESSAGE);
+        nombreDemandado = JOptionPane.showInputDialog(null, "Ingrese nombre completo del demandado", "Ingreso", JOptionPane.QUESTION_MESSAGE);
         String registro = Consultar.consultarDemanda(nombreDemandante, nombreDemandado);
         if (registro.contains("empty")) {
-            JOptionPane.showMessageDialog(null, "Verifique que los datos ingresados son correctos", "Demanda no encontrada", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Verifique que los datos ingresados son correctos", "Demanda no encontrada", JOptionPane.QUESTION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Se ha creado la consulta.", "Listo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -216,7 +218,7 @@ public class Consultar {
             PdfDocument pd = new PdfDocument(pw);
             Document doc = new Document(pd);
             String registro = "";
-            int numeroRegistro = 0;
+            int numeroRegistro = 0, cantidadDeRegistros = Consultar.cantidaDeRegistros();
             do {
                 registro = Consultar.consultarDemanda(numeroRegistro);
                 if (!(registro.contains("empty"))) {
@@ -240,11 +242,10 @@ public class Consultar {
                         }
                     }
                     doc.add(new Paragraph("\n\n"));
-                } else {
-                    break;
                 }
                 numeroRegistro++;
-            } while (!(registro.contains("empty")));
+            } while (numeroRegistro <= cantidadDeRegistros);
+            JOptionPane.showMessageDialog(null, "Se ha creado la consulta.", "Listo", JOptionPane.INFORMATION_MESSAGE);
             doc.close();
             pd.close();
             pw.close();
@@ -331,5 +332,23 @@ public class Consultar {
         } catch (IOException ioe) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    static int cantidaDeRegistros(){
+        int numeroRegistro = -1, caracter = 0;
+        try {
+            InputStream is = new FileInputStream("OJDemandas.txt");
+            while (caracter != -1) {
+                caracter = is.read();
+                if ("#".equals(String.valueOf((char)caracter))) {
+                    numeroRegistro++;
+                }
+            }
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ioex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return numeroRegistro;
     }
 }

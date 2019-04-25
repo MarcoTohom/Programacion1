@@ -39,9 +39,9 @@ public class Agregar {
             byte[] charPRegistro = pRegistro.getBytes();
             fos.write(charPRegistro);
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -56,7 +56,7 @@ public class Agregar {
                 registro = registro.concat(String.valueOf(numeroRegistro)).concat("@").concat(String.valueOf(numeroColegiadoJuez).concat("@#"));
                 Agregar.agregarDemanda(registro);
             } else {
-                JOptionPane.showMessageDialog(null, "El juez ya se encuentra asignado", "Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El juez ya se encuentra asignado", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -67,9 +67,9 @@ public class Agregar {
             byte[] charPRegistro = pRegistro.getBytes();
             fos.write(charPRegistro);
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -87,7 +87,7 @@ public class Agregar {
                         registro = registro.concat(String.valueOf(numeroRegistro) + "@" + String.valueOf(veredicto) + "@#");
                         Agregar.agregarVeredicto(registro);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Ingreso erroneo", "Error", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Ingreso erroneo", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -100,9 +100,9 @@ public class Agregar {
             byte[] charPRegistro = pRegistro.getBytes();
             fos.write(charPRegistro);
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se ha podido encontrar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

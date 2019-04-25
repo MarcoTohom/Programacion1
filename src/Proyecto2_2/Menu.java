@@ -11,13 +11,14 @@ public class Menu {
         try {
             String opcion = "opcion";
             do {
-                opcion = JOptionPane.showInputDialog("\nEliga una opcion:"
+                opcion = JOptionPane.showInputDialog(null, "\nEliga una opcion:"
                         + "\n1 Agregar demanda."
                         + "\n2 Agregar juez a una demanda."
-                        + "\n3 Agregar veredicto una demanda"
-                        + "\n4 Consultar demanda"
+                        + "\n3 Agregar veredicto a una demanda"
+                        + "\n4 Reportes"
                         + "\n5 Eliminar demanda"
-                        + "\n0 Salir\n"
+                        + "\n0 Salir\n",
+                        JOptionPane.QUESTION_MESSAGE
                 );
                 switch (opcion) {
                     case "0":
