@@ -25,6 +25,10 @@ public class Test {
                     //Se agrega el caso para que no marque error
                     case "salir":
                         break;
+                    //Casos de Buscar
+                    case "buscarDemanda":
+                        testBuscarDemanda();
+                        break;
                     //Casos de Consultar
                     case "consultarDemanda":
                         testConsultarDemanda();
@@ -37,7 +41,7 @@ public class Test {
                         testConsultarDemandaEliminada();
                         break;
                     default:
-                        System.out.println("Opcion incorrecta");
+                        JOptionPane.showMessageDialog(null, opcion +" es una opcion incorrecta", "Error.", JOptionPane.WARNING_MESSAGE);
                         break;
                 }
             } while (!("salir".equals(opcion)));
@@ -47,7 +51,14 @@ public class Test {
             System.out.println("Error nfe");
         }
     }
-
+    
+    //Metodos de test para la clase Buscar
+    static void testBuscarDemanda() {
+        String nombreDemandante = JOptionPane.showInputDialog("Nombre demandante: ");
+        String nombreDemandado = JOptionPane.showInputDialog("Nombre demandante: ");
+        int numeroRegistro = Buscar.buscarDemanda(nombreDemandante, nombreDemandado);
+        JOptionPane.showMessageDialog(null, "Numero de registro: "+numeroRegistro, "Salida", JOptionPane.INFORMATION_MESSAGE);
+    }
     //Metodos de test para la clase Consultar
     static void testConsultarJuez() {
         try {

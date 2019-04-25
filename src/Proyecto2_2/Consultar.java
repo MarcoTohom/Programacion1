@@ -65,31 +65,22 @@ public class Consultar {
                 String stringCaracter = String.valueOf((char) caracter);
                 if ("#".equals(stringCaracter)) {
                     numeroRegistro++;
-                    registro = registro.toLowerCase();
-                    String[] campoDemandas = registro.split("[@]");
-                    if (campoDemandas[0].contains(pNombreDemandante) && campoDemandas[1].contains(pNombreDemandado)) {
-                        //JOptionPane.showMessageDialog(null, numeroRegistro); numero de registro
-                        String registroJuez = Consultar.consultarJuezVeredicto(numeroRegistro, true);
-                        if (!("empty".equals(registroJuez))) {
-                            registro = registro.concat(registroJuez + "@");
-                            //<editor-fold defaultstate="collapsed" desc=" Prueba ">
-                            /*
-                                if (campoJuez.length > 1) {
-                                    registro.concat(campoJuez[1] + "@");
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "Indice erroneo", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (!Eliminar.consultarDemandaEliminada(numeroRegistro)) {
+                        registro = registro.toLowerCase();
+                        String[] campoDemandas = registro.split("[@]");
+                        if (campoDemandas[0].contains(pNombreDemandante) && campoDemandas[1].contains(pNombreDemandado)) {
+                            String registroJuez = Consultar.consultarJuezVeredicto(numeroRegistro, true);
+                            if (!("empty".equals(registroJuez))) {
+                                registro = registro.concat(registroJuez + "@");
+                                String registroVeredicto = Consultar.consultarJuezVeredicto(numeroRegistro, false);
+                                if (!("empty".equals(registroVeredicto))) {
+                                    registro = registro.concat(registroVeredicto + "@");
                                 }
-                                JOptionPane.showMessageDialog(null, registro);
-                             */
-                            //</editor-fold>
-                            String registroVeredicto = Consultar.consultarJuezVeredicto(numeroRegistro, false);
-                            if (!("empty".equals(registroVeredicto))) {
-                                registro = registro.concat(registroVeredicto + "@");
                             }
+                            generarConsultaDemanda(registro);
+                            encontrado = true;
+                            break;
                         }
-                        generarConsultaDemanda(registro);
-                        encontrado = true;
-                        break;
                     }
                     registro = "";
                 } else {
@@ -275,17 +266,19 @@ public class Consultar {
                 String stringCaracter = String.valueOf((char) caracter);
                 if ("#".equals(stringCaracter)) {
                     numeroRegistro++;
-                    if (numeroRegistro == pNumeroRegistro) {
-                        String registroJuez = Consultar.consultarJuezVeredicto(numeroRegistro, true);
-                        if (!("empty".equals(registroJuez))) {
-                            registro = registro.concat(registroJuez + "@");
-                            String registroVeredicto = Consultar.consultarJuezVeredicto(numeroRegistro, false);
-                            if (!("empty".equals(registroVeredicto))) {
-                                registro = registro.concat(registroVeredicto + "@");
+                    if (!Eliminar.consultarDemandaEliminada(numeroRegistro)) {
+                        if (numeroRegistro == pNumeroRegistro) {
+                            String registroJuez = Consultar.consultarJuezVeredicto(numeroRegistro, true);
+                            if (!("empty".equals(registroJuez))) {
+                                registro = registro.concat(registroJuez + "@");
+                                String registroVeredicto = Consultar.consultarJuezVeredicto(numeroRegistro, false);
+                                if (!("empty".equals(registroVeredicto))) {
+                                    registro = registro.concat(registroVeredicto + "@");
+                                }
                             }
+                            encontrado = true;
+                            break;
                         }
-                        encontrado = true;
-                        break;
                     }
                     registro = "";
                 } else {

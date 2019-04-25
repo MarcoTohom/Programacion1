@@ -34,12 +34,13 @@ public class Buscar {
                 String stringCaracter = String.valueOf((char) caracter);
                 if ("#".equals(stringCaracter)) {
                     numeroRegistro++;
-                    registro = registro.toLowerCase();
-                    String campo[] = registro.split("[@]");
-
-                    if (campo[0].contains(pNombreDemandante) && campo[1].contains(pNombreDemandado)) {
-                        encontrado = true;
-                        break;
+                    if (!Eliminar.consultarDemandaEliminada(numeroRegistro)) {
+                        registro = registro.toLowerCase();
+                        String campo[] = registro.split("[@]");
+                        if (campo[0].contains(pNombreDemandante) && campo[1].contains(pNombreDemandado)) {
+                            encontrado = true;
+                            break;
+                        }
                     }
                     registro = "";
                 } else {
