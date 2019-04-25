@@ -17,14 +17,16 @@ public class Agregar {
             nombreDemandante = JOptionPane.showInputDialog("\nIngrese nombre de demandante:\n");
             nombreDemandado = JOptionPane.showInputDialog("\nIngrese nombre de demandado:\n");
             //Se valida de que no esté inscrita la demanda
-            if (Buscar.buscarDemanda(nombreDemandante, nombreDemandado) != -1) {
-                JOptionPane.showMessageDialog(null, "\nLa demanda ya está registrada en la base de datos.\n");
-            } else {
+            int numeroRegistro = Buscar.buscarDemanda(nombreDemandante, nombreDemandado);
+            boolean demandaEliminada= Eliminar.consultarDemandaEliminada(numeroRegistro);
+            if ((numeroRegistro != -1 && demandaEliminada) || numeroRegistro == -1) {
                 direccionDemandado = JOptionPane.showInputDialog("Ingrse direccion del demandado:");
                 montoPension = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el monto de la pension:"));
                 registro = registro.concat(nombreDemandante).concat("@").concat(nombreDemandado).concat("@").concat(direccionDemandado).concat("@").concat(String.valueOf(montoPension)).concat("@").concat("#");
                 registro = registro.toLowerCase();
                 agregarDemanda(registro);
+            } else {
+                JOptionPane.showMessageDialog(null, "\nLa demanda ya está registrada en la base de datos.\n");
             }
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, "Se ha ingresado un valor erróneo", "Error", JOptionPane.ERROR_MESSAGE);
