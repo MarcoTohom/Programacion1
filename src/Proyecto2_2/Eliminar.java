@@ -19,6 +19,7 @@ public class Eliminar {
         nombreDemandado = nombreDemandado.toLowerCase();
         int numeroRegistro = Buscar.buscarDemanda(nombreDemandante, nombreDemandado);
         Eliminar.eliminarDemanda(numeroRegistro);
+        JOptionPane.showMessageDialog(null, "Demanda eliminada", "Salida", JOptionPane.INFORMATION_MESSAGE);
     }
 
     static void eliminarDemanda(int pNumeroRegistro) {

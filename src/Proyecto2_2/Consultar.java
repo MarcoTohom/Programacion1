@@ -4,6 +4,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,12 +15,13 @@ import javax.swing.JOptionPane;
  * @author Marco Antonio Lares Tohom
  */
 public class Consultar {
-
+    static File consultaPdf = new File("Consulta.pdf");
+    static String direccion = consultaPdf.getAbsolutePath();
     static void solicitarConsultar() {
         try {
             String tipoConsulta = "";
             do {
-                tipoConsulta = JOptionPane.showInputDialog(null, "Eliga el tipo de consulta:"
+                tipoConsulta = JOptionPane.showInputDialog(null, "Eliga el tipo de reporte:"
                         + "\n1. Por demanda"
                         + "\n2. General", "Ingreso", JOptionPane.QUESTION_MESSAGE);
                 switch (tipoConsulta) {
@@ -189,7 +191,7 @@ public class Consultar {
                 String stringCaracter = String.valueOf((char) caracter);
                 if ("#".equals(stringCaracter)) {
                     registro = registro.toLowerCase();
-                    String campo[] = registro.split("[@]");
+                    String campo[] = registro.split("[^0-9]");
                     if (Integer.parseInt(campo[0]) == pNumeroRegistro) {
                         registro = campo[1];
                         encontrado = true;
@@ -218,34 +220,37 @@ public class Consultar {
             PdfDocument pd = new PdfDocument(pw);
             Document doc = new Document(pd);
             String registro = "";
-            int numeroRegistro = 0, cantidadDeRegistros = Consultar.cantidaDeRegistros();
+            int numeroRegistro = 0, cantidadDeRegistros = Consultar.cantidaDeRegistros(), montoTotalPension = 0;
             do {
                 registro = Consultar.consultarDemanda(numeroRegistro);
                 if (!(registro.contains("empty"))) {
                     registro = registro.toUpperCase();
                     String[] campo = registro.split("[@]");
                     campo[0] = campo[0].replaceAll("[^a-zA-Z ]", "");
-                    doc.add(new Paragraph("Nombre de demandante: " + campo[0]));
-                    doc.add(new Paragraph("Nombre de demandado: " + campo[1]));
-                    doc.add(new Paragraph("Direccion demandado: " + campo[2]));
-                    doc.add(new Paragraph("Monto pension: " + campo[3]));
+                    montoTotalPension = montoTotalPension + Integer.parseInt(campo[3]);
+                    String parrafo = "\nNumero de registro : "+ (numeroRegistro + 1) +"\nNombre de demandante: " + campo[0]
+                            + "\nNombre de demandado: " + campo[1]
+                            + "\nDireccion demandado: " + campo[2]
+                            + "\nMonto pension: " + campo[3];
                     if (campo.length > 4) {
-                        doc.add(new Paragraph("Colegiado de juez asignado: " + campo[4]));
+                        parrafo = parrafo.concat("\nColegiado de juez asignado: " + campo[4]);
                         if (campo.length > 5) {
-                            String veredicto;
+                            String veredicto = "";
                             if (campo[5].equals("1")) {
                                 veredicto = "Demanda ganada.";
                             } else {
                                 veredicto = "Demanda no ganada.";
                             }
-                            doc.add(new Paragraph("Veredicto: " + veredicto));
+                            parrafo = parrafo.concat("\nVeredicto: "+veredicto+"\n");
                         }
                     }
-                    doc.add(new Paragraph("\n\n"));
+                    doc.add(new Paragraph(parrafo));
+                    //doc.add(new Paragraph("\n\n"));
                 }
                 numeroRegistro++;
             } while (numeroRegistro <= cantidadDeRegistros);
-            JOptionPane.showMessageDialog(null, "Se ha creado la consulta.", "Listo", JOptionPane.INFORMATION_MESSAGE);
+            doc.add(new Paragraph("Monto total de pensiones: "+montoTotalPension));
+            JOptionPane.showMessageDialog(null, "Se ha creado la consulta en "+direccion, "Listo", JOptionPane.INFORMATION_MESSAGE);
             doc.close();
             pd.close();
             pw.close();
@@ -301,29 +306,30 @@ public class Consultar {
     static void generarConsultaDemanda(String pRegistro) {
         pRegistro = pRegistro.toUpperCase();
         String[] campo = pRegistro.split("[@]");
+        String veredicto;
         campo[0] = campo[0].replace("[^a-zA-Z ]", "");
         try {
             PdfWriter pw = new PdfWriter("Consulta.pdf");
             PdfDocument pd = new PdfDocument(pw);
             Document doc = new Document(pd);
-
-            doc.add(new Paragraph("Nombre de demandante: " + campo[0]));
-            doc.add(new Paragraph("Nombre de demandado: " + campo[1]));
-            doc.add(new Paragraph("Direccion demandado: " + campo[2]));
-            doc.add(new Paragraph("Monto pension: " + campo[3]));
+            
+            String parrafo = "\nNombre de demandante: " + campo[0]
+                    + "\nNombre de demandado: " + campo[1]
+                    + "\nDireccion demandado: " + campo[2]
+                    + "\nMonto pension: " + campo[3];
             if (campo.length > 4) {
-                doc.add(new Paragraph("Colegiado de juez asignado: " + campo[4]));
+                parrafo = parrafo.concat("\nColegiado de juez: " + campo[4]);
                 if (campo.length > 5) {
-                    String veredicto;
                     if (campo[5].equals("1")) {
-                        veredicto = "Demanda ganada.";
+                        veredicto = "Demanda ganada";
                     } else {
-                        veredicto = "Demanda no ganada.";
+                        veredicto = "Demanda no ganada";
                     }
-                    doc.add(new Paragraph("Veredicto: " + veredicto + "\n\n"));
+                    parrafo = parrafo.concat("\nVeredicto: "+ veredicto);
                 }
             }
-
+            doc.add(new Paragraph(parrafo));
+            JOptionPane.showMessageDialog(null, "Se ha creado la consulta en "+direccion, "Listo", JOptionPane.INFORMATION_MESSAGE);
             doc.close();
             pd.close();
             pw.close();
@@ -333,14 +339,14 @@ public class Consultar {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar de acceder a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    static int cantidaDeRegistros(){
+
+    static int cantidaDeRegistros() {
         int numeroRegistro = -1, caracter = 0;
         try {
             InputStream is = new FileInputStream("OJDemandas.txt");
             while (caracter != -1) {
                 caracter = is.read();
-                if ("#".equals(String.valueOf((char)caracter))) {
+                if ("#".equals(String.valueOf((char) caracter))) {
                     numeroRegistro++;
                 }
             }

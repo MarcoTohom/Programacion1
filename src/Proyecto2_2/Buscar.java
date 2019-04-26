@@ -24,7 +24,7 @@ public class Buscar {
 
     static int buscarDemanda(String pNombreDemandante, String pNombreDemandado) {
         String registro = "";
-        int numeroRegistro = 0, caracter = 0;
+        int numeroRegistro = -1, caracter = 0;
         boolean encontrado = false;
         pNombreDemandante = pNombreDemandante.toLowerCase();
         try {
@@ -54,6 +54,7 @@ public class Buscar {
         }
         if (!encontrado) {
             numeroRegistro = -1;
+            JOptionPane.showMessageDialog(null, "No se ha encontrado la demanda.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
         return numeroRegistro;
     }
@@ -82,8 +83,8 @@ public class Buscar {
                 String stringCaracter = String.valueOf((char) caracter);
                 if ("#".equals(stringCaracter)) {
                     numeroRegistro++;
-                    String vectorRegistro[] = registro.split("[^0-9]");
-                    if (pTerminoDeBusqueda == Integer.parseInt(vectorRegistro[busquedaNumeroDemandaColegiadoJuez])) {
+                    String[] campo = registro.split("[^0-9]");
+                    if (pTerminoDeBusqueda == Integer.parseInt(campo[busquedaNumeroDemandaColegiadoJuez])) {
                         encontrado = true;
                         break;
                     }
@@ -115,11 +116,14 @@ public class Buscar {
                 String stringCaracter = String.valueOf((char) caracter);
                 if ("#".equals(stringCaracter)) {
                     numeroRegistro++;
-                    String vectorRegistro[] = registro.split("[^0-9]");
-                    if (pNumeroRegistro == Integer.parseInt(vectorRegistro[0])) {
+                    String[] campo = registro.split("[^0-9]");
+                    if (pNumeroRegistro == Integer.parseInt(campo[0])) {
                         encontrado = true;
                         break;
                     }
+                    registro = "";
+                } else {
+                    registro = registro.concat(stringCaracter);
                 }
             }
             is.close();

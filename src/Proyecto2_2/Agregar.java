@@ -47,14 +47,14 @@ public class Agregar {
 
     static void solicitarAgregarJuez() {
         String registro = "";
-        int numeroColegiadoJuez = -1, numeroRegistro = -1;
-        numeroRegistro = Buscar.solicitarBuscarDemanda();
-        if (numeroRegistro != -1) {
-            numeroRegistro = Buscar.buscarJuez(numeroRegistro, false);
-            if (numeroRegistro != -1) {
+        int numeroColegiadoJuez = -1, numeroRegistroDemanda = -1, numeroRegistroJuez = -1;
+        numeroRegistroDemanda = Buscar.solicitarBuscarDemanda();
+        if (numeroRegistroDemanda != -1) { //Si está la demanda
+            numeroRegistroJuez = Buscar.buscarJuez(numeroRegistroDemanda, false);
+            if (numeroRegistroJuez == -1) {
                 numeroColegiadoJuez = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de colegiado del juez:"));
-                registro = registro.concat(String.valueOf(numeroRegistro)).concat("@").concat(String.valueOf(numeroColegiadoJuez).concat("@#"));
-                Agregar.agregarDemanda(registro);
+                registro = registro.concat(String.valueOf(numeroRegistroDemanda)).concat("@").concat(String.valueOf(numeroColegiadoJuez).concat("@#"));
+                Agregar.agregarJuez(registro);
             } else {
                 JOptionPane.showMessageDialog(null, "El juez ya se encuentra asignado", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -75,17 +75,18 @@ public class Agregar {
 
     static void solicitarAgregarVeredicto() {
         String registro = "";
-        int numeroRegistro = -1, veredicto = 0;
-        numeroRegistro = Buscar.solicitarBuscarDemanda(); //Se busca el numero de registro de la demanda en las demandas
-        if (numeroRegistro != -1) { //Si es -1 no existe la demanda
-            numeroRegistro = Buscar.buscarJuez(numeroRegistro, false); //Se busca el numero de registro de la demanda en los jueces
-            if (numeroRegistro != -1) { //Si es -1 no existe juez asignado
-                numeroRegistro = Buscar.buscarVeredicto(numeroRegistro); //Se busca el numero de registro de la demanda en los veredictos
-                if (numeroRegistro != -1) { //Si es -1 no existe veredicto asignado
+        int numeroRegistroDemanda = -1, numeroRegistroJuez = -1, numeroRegistroVeredicto = -1, veredicto = 0;
+        numeroRegistroDemanda = Buscar.solicitarBuscarDemanda(); //Se busca el numero de registro de la demanda en las demandas
+        if (numeroRegistroDemanda != -1) { //Si es -1 no existe la demanda
+            numeroRegistroJuez = Buscar.buscarJuez(numeroRegistroDemanda, false); //Se busca el numero de registro de la demanda en los jueces
+            if (numeroRegistroJuez != -1) { //Si es -1 no existe juez asignado
+                numeroRegistroVeredicto = Buscar.buscarVeredicto(numeroRegistroDemanda); //Se busca el numero de registro de la demanda en los veredictos
+                if (numeroRegistroVeredicto == -1) { //Si es -1 no existe veredicto asignado
                     veredicto = JOptionPane.showConfirmDialog(null, "¿Ganó la demanda?", "Ingreso", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (veredicto != -1) {
-                        registro = registro.concat(String.valueOf(numeroRegistro) + "@" + String.valueOf(veredicto) + "@#");
+                        registro = registro.concat(String.valueOf(numeroRegistroDemanda) + "@" + String.valueOf(veredicto) + "@#");
                         Agregar.agregarVeredicto(registro);
+                        JOptionPane.showMessageDialog(null, "Veredicto asignado", "Salida", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, "Ingreso erroneo", "Error", JOptionPane.ERROR_MESSAGE);
                     }
