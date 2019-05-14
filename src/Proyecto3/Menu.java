@@ -5,18 +5,16 @@
  */
 package Proyecto3;
 
-import java.awt.Color;
-
 /**
  *
  * @author Marco
  */
-public class JFrameMenu extends javax.swing.JFrame {
+public class Menu extends javax.swing.JFrame {
 
     /**
      * Creates new form Menu
      */
-    public JFrameMenu() {
+    public Menu() {
         initComponents();
     }
 
@@ -32,21 +30,14 @@ public class JFrameMenu extends javax.swing.JFrame {
         jButtonAgregarEvento = new javax.swing.JButton();
         jButtonModificarEvento = new javax.swing.JButton();
         jButtonConsultarEvento = new javax.swing.JButton();
-        jButtonAgendaDeEventos = new javax.swing.JButton();
+        jButtonAgendaEventos = new javax.swing.JButton();
         jLabelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Menu");
         setLocation(new java.awt.Point(200, 200));
         setResizable(false);
-        setSize(new java.awt.Dimension(600, 400));
 
         jButtonAgregarEvento.setText("Agregar evento");
-        jButtonAgregarEvento.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButtonAgregarEventoMouseEntered(evt);
-            }
-        });
         jButtonAgregarEvento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAgregarEventoActionPerformed(evt);
@@ -56,8 +47,13 @@ public class JFrameMenu extends javax.swing.JFrame {
         jButtonModificarEvento.setText("Modificar evento");
 
         jButtonConsultarEvento.setText("Consultar evento");
+        jButtonConsultarEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarEventoActionPerformed(evt);
+            }
+        });
 
-        jButtonAgendaDeEventos.setText("Agenda de eventos");
+        jButtonAgendaEventos.setText("Agenda de eventos");
 
         jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proyecto3/logo.png"))); // NOI18N
 
@@ -66,47 +62,51 @@ public class JFrameMenu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonAgregarEvento)
-                    .addComponent(jButtonAgendaDeEventos)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonAgregarEvento)
+                        .addGap(18, 18, 18))
                     .addComponent(jButtonModificarEvento)
-                    .addComponent(jButtonConsultarEvento))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelLogo))
+                    .addComponent(jButtonConsultarEvento)
+                    .addComponent(jButtonAgendaEventos))
+                .addGap(18, 18, 18)
+                .addComponent(jLabelLogo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelLogo)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonAgregarEvento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jButtonModificarEvento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jButtonConsultarEvento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAgendaDeEventos))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonAgendaEventos))
+                    .addComponent(jLabelLogo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonAgregarEventoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAgregarEventoMouseEntered
-        // TODO add your handling code here:
-        this.setBackground(Color.yellow);
-    }//GEN-LAST:event_jButtonAgregarEventoMouseEntered
-
     private void jButtonAgregarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarEventoActionPerformed
         // TODO add your handling code here:
-        JFrameAgregar ventanaAgregar = new JFrameAgregar();
-
-        //JOptionPane.showMessageDialog(null, yearActual);
+        Agregar ventanaAgregar = new Agregar();
         ventanaAgregar.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonAgregarEventoActionPerformed
+
+    private void jButtonConsultarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarEventoActionPerformed
+        // TODO add your handling code here:
+        Consultar ventanaConsultar = new Consultar();
+        ventanaConsultar.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonConsultarEventoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -125,27 +125,26 @@ public class JFrameMenu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameMenu().setVisible(true);
+                new Menu().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAgendaDeEventos;
+    private javax.swing.JButton jButtonAgendaEventos;
     private javax.swing.JButton jButtonAgregarEvento;
     private javax.swing.JButton jButtonConsultarEvento;
     private javax.swing.JButton jButtonModificarEvento;
