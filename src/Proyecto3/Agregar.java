@@ -11,10 +11,14 @@ import javax.swing.JOptionPane;
  */
 
 public class Agregar extends javax.swing.JFrame {
+    
     static void agregarEvento(String pFechaEvento, String pNombreArtista, int pCantidadAsistentes) {
         try {
             RandomAccessFile raf = new RandomAccessFile("eventos.bin", "rw");
             raf.seek(raf.length());
+            raf.writeUTF(pFechaEvento);
+            raf.writeUTF(pNombreArtista);
+            raf.writeInt(pCantidadAsistentes);
             raf.close();
         } catch (FileNotFoundException fnfe) {
             JOptionPane.showMessageDialog(null, "Error", "Archivo no encontrado.", JOptionPane.INFORMATION_MESSAGE);
@@ -22,6 +26,7 @@ public class Agregar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error", "Ha ocurrido un fallo en la escritura o lectura de la Base de Datos.", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+    
     public Agregar() {
         initComponents();
     }
@@ -268,30 +273,36 @@ public class Agregar extends javax.swing.JFrame {
         // TODO add your handling code here:
         jComboBoxDia.setEnabled(true);
         switch (jComboBoxMes.getSelectedIndex()) {
-            case 0: case 2: case 4: case 6: case 7: case 9: case 11:
-            jComboBoxDia.removeAllItems();
-            for (int i = 1; i < 32; i++) {
-                jComboBoxDia.addItem(String.valueOf(i));
-            }
-            break;
+            case 0:
+            case 2:
+            case 4:
+            case 6:
+            case 7:
+            case 9:
+            case 11:
+                jComboBoxDia.removeAllItems();
+                for (int i = 1; i < 32; i++) {
+                    jComboBoxDia.addItem(String.valueOf(i));
+                }
+                break;
             case 1:
-            jComboBoxDia.removeAllItems();
-            if ((jComboBoxYear.getSelectedIndex()+1)%4==0) {
-                for (int i = 1; i < 30; i++) {
-                    jComboBoxDia.addItem(String.valueOf(i));
+                jComboBoxDia.removeAllItems();
+                if ((jComboBoxYear.getSelectedIndex() + 1) % 4 == 0) {
+                    for (int i = 1; i < 30; i++) {
+                        jComboBoxDia.addItem(String.valueOf(i));
+                    }
+                } else {
+                    for (int i = 1; i < 29; i++) {
+                        jComboBoxDia.addItem(String.valueOf(i));
+                    }
                 }
-            } else {
-                for (int i = 1; i < 29; i++) {
-                    jComboBoxDia.addItem(String.valueOf(i));
-                }
-            }
-            break;
+                break;
             default:
-            jComboBoxDia.removeAllItems();
-            for (int i = 1; i < 31; i++) {
-                jComboBoxDia.addItem(String.valueOf(i));
-            }
-            break;
+                jComboBoxDia.removeAllItems();
+                for (int i = 1; i < 31; i++) {
+                    jComboBoxDia.addItem(String.valueOf(i));
+                }
+                break;
         }
     }//GEN-LAST:event_jComboBoxMesActionPerformed
 

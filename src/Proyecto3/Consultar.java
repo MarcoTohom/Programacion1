@@ -5,6 +5,12 @@
  */
 package Proyecto3;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Marco
@@ -37,10 +43,19 @@ public class Consultar extends javax.swing.JFrame {
         jButtonRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Consultar");
+        setIconImages(null);
+        setLocation(new java.awt.Point(250, 250));
+        setResizable(false);
 
         jSpinnerFecha.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_YEAR));
 
         jButtonConsultar.setText("Consultar");
+        jButtonConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarActionPerformed(evt);
+            }
+        });
 
         jTextFieldArtista.setText("Artista");
 
@@ -53,6 +68,11 @@ public class Consultar extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButtonRegresar.setText("Regresar");
+        jButtonRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,21 +81,23 @@ public class Consultar extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButtonConsultar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonRegresar))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel2))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jSpinnerFecha)
-                                .addComponent(jTextFieldArtista)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonConsultar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonRegresar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSpinnerFecha)
+                                    .addComponent(jTextFieldArtista))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,6 +121,35 @@ public class Consultar extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
+        // TODO add your handling code here:
+        //Prueba de lectura
+        try {
+            RandomAccessFile raf = new RandomAccessFile("eventos.bin", "r");
+            String tempFecha = raf.readUTF();
+            Date fecha = new Date(tempFecha);
+            jTextArea1.append("Año: "+fecha.getYear()+"\n");
+            jTextArea1.append("Mes: "+fecha.getMonth()+"\n");
+            jTextArea1.append("Dia: "+fecha.getDay()+"\n");
+            jTextArea1.append("Hora: "+fecha.getHours()+"\n");
+            String artista = raf.readUTF();
+            jTextArea1.append("Artista: "+artista+"\n");
+            int cantidadAsistentes = raf.readInt();
+            jTextArea1.append("Cantidad asistentes: "+String.valueOf(cantidadAsistentes)+"\n");
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "Error", "Archivo no encontrado.", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Error", "Ha ocurrido un fallo en la escritura o lectura de la Base de Datos.", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonConsultarActionPerformed
+
+    private void jButtonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegresarActionPerformed
+        // TODO add your handling code here:
+        Menu ventanaMenu = new Menu();
+        ventanaMenu.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonRegresarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConsultar;
