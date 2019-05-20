@@ -33,7 +33,6 @@ public class Consultar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSpinnerFecha = new javax.swing.JSpinner();
         jButtonConsultar = new javax.swing.JButton();
         jTextFieldArtista = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -41,14 +40,21 @@ public class Consultar extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButtonRegresar = new javax.swing.JButton();
+        jComboBoxYear = new javax.swing.JComboBox<>();
+        jComboBoxMonth = new javax.swing.JComboBox<>();
+        jComboBoxDay = new javax.swing.JComboBox<>();
+        jComboBoxHour = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consultar");
         setIconImages(null);
         setLocation(new java.awt.Point(250, 250));
         setResizable(false);
-
-        jSpinnerFecha.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_YEAR));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jButtonConsultar.setText("Consultar");
         jButtonConsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -58,6 +64,11 @@ public class Consultar extends javax.swing.JFrame {
         });
 
         jTextFieldArtista.setText("Artista");
+        jTextFieldArtista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldArtistaKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Fecha del evento:");
 
@@ -74,6 +85,18 @@ public class Consultar extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
+        jComboBoxMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxMonthActionPerformed(evt);
+            }
+        });
+
+        jComboBoxDay.setEnabled(false);
+
+        jComboBoxHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        jComboBoxHour.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,21 +105,25 @@ public class Consultar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonConsultar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonRegresar))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jSpinnerFecha)
-                                    .addComponent(jTextFieldArtista))))
+                        .addComponent(jButtonConsultar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonRegresar))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBoxYear, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxDay, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxHour, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextFieldArtista)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -104,14 +131,17 @@ public class Consultar extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinnerFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBoxYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldArtista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonConsultar)
@@ -123,20 +153,45 @@ public class Consultar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
-        // TODO add your handling code here:
         //Prueba de lectura
         try {
-            RandomAccessFile raf = new RandomAccessFile("eventos.bin", "r");
-            String tempFecha = raf.readUTF();
-            Date fecha = new Date(tempFecha);
-            jTextArea1.append("Año: "+fecha.getYear()+"\n");
-            jTextArea1.append("Mes: "+fecha.getMonth()+"\n");
-            jTextArea1.append("Dia: "+fecha.getDay()+"\n");
-            jTextArea1.append("Hora: "+fecha.getHours()+"\n");
-            String artista = raf.readUTF();
-            jTextArea1.append("Artista: "+artista+"\n");
-            int cantidadAsistentes = raf.readInt();
-            jTextArea1.append("Cantidad asistentes: "+String.valueOf(cantidadAsistentes)+"\n");
+            RandomAccessFile rafEvents = new RandomAccessFile("eventos.bin", "r"), rafIndex = new RandomAccessFile("index.bin", "r");
+            String artista = jTextFieldArtista.getText();
+            int fecha[] = new int [3];
+            fecha[0] = Integer.parseInt(String.valueOf(jComboBoxYear.getSelectedItem()));
+            fecha[1] = jComboBoxMonth.getSelectedIndex()+1;
+            fecha[2] = jComboBoxDay.getSelectedIndex()+1;
+            for (int i = 0; i < rafEvents.length() / 52; i++) {
+                String compareArtista = "";
+                int compareFecha[] = new int[3], hour = 0, people = 0;
+                
+                compareFecha[0] = rafIndex.readInt();
+                compareFecha[1] = rafIndex.readInt();
+                compareFecha[2] = rafIndex.readInt();
+                compareArtista = rafIndex.readUTF();
+                //hour = rafEvents.readInt();
+                //compareArtista = rafEvents.readUTF();
+                //people = rafEvents.readInt();
+                if (fecha[0] == compareFecha[0] && fecha[1] == compareFecha[1] && fecha[2] == compareFecha[2] && compareArtista.contains(artista)) {
+                    rafEvents.seek(rafIndex.readLong());
+                    fecha[0] = rafEvents.readInt();
+                    fecha[1] = rafEvents.readInt();
+                    fecha[2] = rafEvents.readInt();
+                    hour = rafEvents.readInt();
+                    artista = rafEvents.readUTF();
+                    people = rafEvents.readInt();
+                    jTextArea1.append("Año: " + fecha[0] + "\n");
+                    jTextArea1.append("Mes: " + fecha[1] + "\n");
+                    jTextArea1.append("Dia: " + fecha[2] + "\n");
+                    jTextArea1.append("Hora: " + hour + "\n");
+                    jTextArea1.append("Artista: " + artista.replaceAll("[|]", " ") + "\n");
+                    jTextArea1.append("Cantidad de asistentes: " + people + "\n\n");
+                } else {
+                    rafIndex.skipBytes(8);
+                }
+            }
+            rafIndex.close();
+            rafEvents.close();
         } catch (FileNotFoundException fnfe) {
             JOptionPane.showMessageDialog(null, "Error", "Archivo no encontrado.", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ioe) {
@@ -151,13 +206,70 @@ public class Consultar extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButtonRegresarActionPerformed
 
+    private void jTextFieldArtistaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldArtistaKeyTyped
+        // TODO add your handling code here:
+        if (jTextFieldArtista.getText().length()>= 30) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "El nombre excede el limite de letras establecido", "Error", 0);
+        }
+    }//GEN-LAST:event_jTextFieldArtistaKeyTyped
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        Date fechaActual = new Date();
+        int yearActual = fechaActual.getYear() + 1900;
+        for (int i = yearActual; i < (yearActual + 10); i++) {
+            jComboBoxYear.addItem(String.valueOf(i));
+        }
+    }//GEN-LAST:event_formWindowActivated
+
+    private void jComboBoxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMonthActionPerformed
+        // TODO add your handling code here:
+        jComboBoxDay.setEnabled(true);
+        switch (jComboBoxMonth.getSelectedIndex()) {
+            case 0:
+            case 2:
+            case 4:
+            case 6:
+            case 7:
+            case 9:
+            case 11:
+                jComboBoxDay.removeAllItems();
+                for (int i = 1; i < 32; i++) {
+                    jComboBoxDay.addItem(String.valueOf(i));
+                }
+                break;
+            case 1:
+                jComboBoxDay.removeAllItems();
+                if (Integer.parseInt(jComboBoxYear.getSelectedItem().toString()) % 4 == 0) {
+                    for (int i = 1; i < 30; i++) {
+                        jComboBoxDay.addItem(String.valueOf(i));
+                    }
+                } else {
+                    for (int i = 1; i < 29; i++) {
+                        jComboBoxDay.addItem(String.valueOf(i));
+                    }
+                }
+                break;
+            default:
+                jComboBoxDay.removeAllItems();
+                for (int i = 1; i < 31; i++) {
+                    jComboBoxDay.addItem(String.valueOf(i));
+                }
+                break;
+        }
+    }//GEN-LAST:event_jComboBoxMonthActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConsultar;
     private javax.swing.JButton jButtonRegresar;
+    private javax.swing.JComboBox<String> jComboBoxDay;
+    private javax.swing.JComboBox<String> jComboBoxHour;
+    private javax.swing.JComboBox<String> jComboBoxMonth;
+    private javax.swing.JComboBox<String> jComboBoxYear;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinnerFecha;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldArtista;
     // End of variables declaration//GEN-END:variables
@@ -175,20 +287,20 @@ public class Consultar extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Agregar().setVisible(true);
+                new Consultar().setVisible(true);
             }
         });
     }

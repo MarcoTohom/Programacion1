@@ -1,5 +1,6 @@
 package Proyecto3;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -12,18 +13,70 @@ import javax.swing.JOptionPane;
 
 public class Agregar extends javax.swing.JFrame {
     
-    static void agregarEvento(String pFechaEvento, String pNombreArtista, int pCantidadAsistentes) {
+    static String setSize(String str, int size) {
+        if (str.length() == size) {
+            return str;
+        } else if (str.length() < size) {
+            String newStr = str;
+            for (int i = str.length(); i < size; i++) {
+                newStr = newStr.concat("|");
+            }
+            str = newStr;
+        } else {
+            String tempStr = "";
+            for (int i = 0; i < size; i++) {
+                tempStr = tempStr.concat(String.valueOf(str.charAt(i)));
+            }
+            str = tempStr;
+        }
+        return str;
+    }
+    
+    static void agregarEvento(int pYear, int pMonth, int pDay, int pHour, String pNombreArtista, int pCantidadAsistentes) {
         try {
-            RandomAccessFile raf = new RandomAccessFile("eventos.bin", "rw");
-            raf.seek(raf.length());
-            raf.writeUTF(pFechaEvento);
-            raf.writeUTF(pNombreArtista);
-            raf.writeInt(pCantidadAsistentes);
-            raf.close();
+            RandomAccessFile rafEvents = new RandomAccessFile("eventos.bin", "rw"); //Se crea el archivo principal y el indice
+            RandomAccessFile rafIndex = new RandomAccessFile("index.bin", "rw");
+            File fileEvents = new File("eventos.bin"); //Se crean dos objetos de tipo File para validar su existencia
+            File fileIndex = new File("eventos.bin");   //Y poder localizar la posicion.
+            long positionEvents, positionIndex;
+            if (fileEvents.exists()) {
+                positionEvents = rafEvents.length();
+            } else {
+                positionEvents = 0;
+            }
+            if (fileIndex.exists()) {
+                positionIndex = rafIndex.length();
+            } else {
+                positionIndex = 0;
+            }
+            rafEvents.seek(positionEvents);
+            rafIndex.seek(positionIndex);
+            
+            rafEvents.writeInt(pYear);
+            rafIndex.writeInt(pYear);
+            
+            rafEvents.writeInt(pMonth);
+            rafIndex.writeInt(pMonth);
+            
+            rafEvents.writeInt(pDay);
+            rafIndex.writeInt(pDay);
+            
+            //rafIndex.writeLong(positionEvents);
+            
+            rafEvents.writeInt(pHour);
+            pNombreArtista = setSize(pNombreArtista, 30);
+            rafIndex.writeUTF(pNombreArtista);
+            rafIndex.writeLong(positionEvents);
+            rafEvents.writeUTF(pNombreArtista);
+            rafEvents.writeInt(pCantidadAsistentes);
+            
+            rafEvents.close();
+            rafIndex.close();
+            JOptionPane.showMessageDialog(null, "Se ha agendado el evento", "Listo", 0);
         } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "Error", "Archivo no encontrado.", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Archivo no encontrado.", "Error", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "Error", "Ha ocurrido un fallo en la escritura o lectura de la Base de Datos.", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un fallo en la escritura o lectura de la Base de Datos.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
@@ -253,7 +306,12 @@ public class Agregar extends javax.swing.JFrame {
                 && (jSpinnerCantidadAsistentes.getValue().equals("0"))) {
             JOptionPane.showMessageDialog(rootPane, "Debe llenar todos los campos");
         } else {
-            agregarEvento(fechaEvento.toString(), artista, cantidadAsistentes);
+            agregarEvento(Integer.parseInt((String)jComboBoxYear.getSelectedItem()),
+                    month,
+                    Integer.parseInt((String)jComboBoxDia.getSelectedItem()),
+                    Integer.parseInt((String)jComboBoxHora.getSelectedItem()),
+                    artista,
+                    cantidadAsistentes);
         }
     }//GEN-LAST:event_jButtonAgregarEventoActionPerformed
 
@@ -308,7 +366,7 @@ public class Agregar extends javax.swing.JFrame {
 
     private void jTextFieldArtistaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldArtistaKeyTyped
         // TODO add your handling code here:
-        if (jTextFieldArtista.getText().length()>= 10) {
+        if (jTextFieldArtista.getText().length()>= 30) {
             evt.consume();
             JOptionPane.showMessageDialog(null, "El nombre excede el limite de letras establecido", "Error", 0);
         }

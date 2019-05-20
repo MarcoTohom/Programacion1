@@ -30,10 +30,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jButtonAgregarEvento" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jButtonAgregarEvento" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonModificarEvento" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonConsultarEvento" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonAgendaEventos" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -91,6 +88,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Agenda de eventos"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAgendaEventosActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelLogo">
       <Properties>

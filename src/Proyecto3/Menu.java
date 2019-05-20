@@ -54,6 +54,11 @@ public class Menu extends javax.swing.JFrame {
         });
 
         jButtonAgendaEventos.setText("Agenda de eventos");
+        jButtonAgendaEventos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgendaEventosActionPerformed(evt);
+            }
+        });
 
         jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proyecto3/logo.png"))); // NOI18N
 
@@ -64,9 +69,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonAgregarEvento)
-                        .addGap(18, 18, 18))
+                    .addComponent(jButtonAgregarEvento)
                     .addComponent(jButtonModificarEvento)
                     .addComponent(jButtonConsultarEvento)
                     .addComponent(jButtonAgendaEventos))
@@ -107,6 +110,13 @@ public class Menu extends javax.swing.JFrame {
         ventanaConsultar.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonConsultarEventoActionPerformed
+
+    private void jButtonAgendaEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgendaEventosActionPerformed
+        // TODO add your handling code here:
+        Agenda ventanaAgenda = new Agenda();
+        ventanaAgenda.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonAgendaEventosActionPerformed
 
     /**
      * @param args the command line arguments
