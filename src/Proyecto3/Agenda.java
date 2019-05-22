@@ -5,9 +5,7 @@
  */
 package Proyecto3;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,6 +28,8 @@ public class Agenda extends javax.swing.JFrame {
         String registry[] = new String[6];
         try {
             RandomAccessFile raf = new RandomAccessFile("eventos.bin", "r");
+            int order[] = new int [Integer.parseInt(String.valueOf(raf.length() / 52))];
+            
             for (int i = 0; i < raf.length() / 52; i++) {
                 registry[3] = String.valueOf(raf.readInt());
                 registry[2] = String.valueOf(raf.readInt());
@@ -73,6 +73,7 @@ public class Agenda extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableSchedule = new javax.swing.JTable();
         jButtonToReturn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AGENDA");
@@ -107,6 +108,13 @@ public class Agenda extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Ordenar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +126,9 @@ public class Agenda extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonToReturn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE))
                 .addContainerGap())
@@ -131,7 +141,9 @@ public class Agenda extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonToReturn)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonToReturn)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -144,6 +156,91 @@ public class Agenda extends javax.swing.JFrame {
         ventanaMenu.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonToReturnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            RandomAccessFile rafEvents = new RandomAccessFile("eventos.bin", "rw");
+            int yearA, yearB = 0, monthA = 0, monthB = 0, dayA = 0, dayB = 0, hourA = 0, hourB = 0, cantidadA = 0, cantidadB = 0;
+            String artistaA = "", artistaB = "";
+            for (long i = 1; i < rafEvents.length() / 52; i++) {
+                rafEvents.seek(i*52);
+                yearA = rafEvents.readInt();
+                monthA = rafEvents.readInt();
+                dayA = rafEvents.readInt();
+                hourA = rafEvents.readInt();
+                artistaA = rafEvents.readUTF();
+                cantidadA = rafEvents.readInt();
+                for (long j = 0; j < i; j++) {
+                    rafEvents.seek(j*52);
+                    yearB = rafEvents.readInt();
+                    monthB = rafEvents.readInt();
+                    dayB = rafEvents.readInt();
+                    hourB = rafEvents.readInt();
+                    artistaB = rafEvents.readUTF();
+                    cantidadB = rafEvents.readInt();
+                    if (cantidadB > cantidadA) { //yearB > yearA
+                        rafEvents.seek(i*52);
+                        rafEvents.writeInt(yearB);
+                        rafEvents.writeInt(monthB);
+                        rafEvents.writeInt(dayB);
+                        rafEvents.writeInt(hourB);
+                        rafEvents.writeUTF(artistaB);
+                        rafEvents.writeInt(cantidadB);
+                        
+                        rafEvents.seek(j*52);
+                        rafEvents.writeInt(yearA);
+                        rafEvents.writeInt(monthA);
+                        rafEvents.writeInt(dayA);
+                        rafEvents.writeInt(hourA);
+                        rafEvents.writeUTF(artistaA);
+                        rafEvents.writeInt(cantidadA);
+                    } 
+                    /*else if(yearB == yearA && monthB > monthA) {
+                        rafEvents.seek(i*52);
+                        rafEvents.writeInt(yearB);
+                        rafEvents.writeInt(monthB);
+                        rafEvents.writeInt(dayB);
+                        rafEvents.writeInt(hourB);
+                        rafEvents.writeUTF(artistaB);
+                        rafEvents.writeInt(cantidadB);
+                        
+                        rafEvents.seek(j*52);
+                        rafEvents.writeInt(yearA);
+                        rafEvents.writeInt(monthA);
+                        rafEvents.writeInt(dayA);
+                        rafEvents.writeInt(hourA);
+                        rafEvents.writeUTF(artistaA);
+                        rafEvents.writeInt(cantidadA);
+                    } else if(yearB == yearA && monthB == monthB && dayB > dayA) {
+                        rafEvents.seek(i*52);
+                        rafEvents.writeInt(yearB);
+                        rafEvents.writeInt(monthB);
+                        rafEvents.writeInt(dayB);
+                        rafEvents.writeInt(hourB);
+                        rafEvents.writeUTF(artistaB);
+                        rafEvents.writeInt(cantidadB);
+                        
+                        rafEvents.seek(j*52);
+                        rafEvents.writeInt(yearA);
+                        rafEvents.writeInt(monthA);
+                        rafEvents.writeInt(dayA);
+                        rafEvents.writeInt(hourA);
+                        rafEvents.writeUTF(artistaA);
+                        rafEvents.writeInt(cantidadA);
+                    }
+                    */
+                }
+            }
+            this.jTableSchedule.removeColumnSelectionInterval(0, 5);
+            rafEvents.close();
+            consult();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "base de datos no encontrado", "Error", 1);
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Fallo al escribir/leer en la base de datos", "Error", 1);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,6 +278,7 @@ public class Agenda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonToReturn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

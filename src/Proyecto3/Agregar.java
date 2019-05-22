@@ -345,7 +345,7 @@ public class Agregar extends javax.swing.JFrame {
                 break;
             case 1:
                 jComboBoxDia.removeAllItems();
-                if ((jComboBoxYear.getSelectedIndex() + 1) % 4 == 0) {
+                if (Integer.parseInt(String.valueOf(jComboBoxYear.getSelectedItem())) % 4 == 0) {
                     for (int i = 1; i < 30; i++) {
                         jComboBoxDia.addItem(String.valueOf(i));
                     }
