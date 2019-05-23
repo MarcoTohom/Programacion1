@@ -232,7 +232,7 @@ public class Agenda extends javax.swing.JFrame {
                     */
                 }
             }
-            this.jTableSchedule.removeColumnSelectionInterval(0, 5);
+            this.jTableSchedule.removeRowSelectionInterval(0, Integer.parseInt(String.valueOf(rafEvents.length()/52))-1);
             rafEvents.close();
             consult();
         } catch (FileNotFoundException ex) {

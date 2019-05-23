@@ -103,6 +103,7 @@ public class Agregar extends javax.swing.JFrame {
         jComboBoxHora = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("AGREGAR EVENTO");
         setLocation(new java.awt.Point(200, 200));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {

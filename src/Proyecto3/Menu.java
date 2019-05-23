@@ -34,6 +34,7 @@ public class Menu extends javax.swing.JFrame {
         jLabelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MENU");
         setLocation(new java.awt.Point(200, 200));
         setResizable(false);
 
@@ -45,6 +46,11 @@ public class Menu extends javax.swing.JFrame {
         });
 
         jButtonModificarEvento.setText("Modificar evento");
+        jButtonModificarEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonModificarEventoActionPerformed(evt);
+            }
+        });
 
         jButtonConsultarEvento.setText("Consultar evento");
         jButtonConsultarEvento.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +123,13 @@ public class Menu extends javax.swing.JFrame {
         ventanaAgenda.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonAgendaEventosActionPerformed
+
+    private void jButtonModificarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarEventoActionPerformed
+        // TODO add your handling code here:
+        Modify windowModify = new Modify();
+        windowModify.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonModificarEventoActionPerformed
 
     /**
      * @param args the command line arguments
